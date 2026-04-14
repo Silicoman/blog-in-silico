@@ -1,0 +1,6 @@
+[tools]
+copier = "latest"
+markdownlint-cli2 = "latest"
+node = "latest"
+pre-commit = "latest"
+python = "3.13.11"

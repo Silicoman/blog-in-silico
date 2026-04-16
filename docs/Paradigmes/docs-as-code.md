@@ -9,7 +9,7 @@ de la documentation pas à jour ou de la documentation manquante, souvent
 perdue dans les limbes d'un répertoire partagé ou d'une GED.
 
 Avec l'essor de l'agilité, une dérive fréquente a été l'inconsistance de la
-documentation lorsque celle-ci n'est pas maintenue au fil de l'eau.
+documentation lorsque celle-ci n'est pas maintenue au fil de l'eau. Si les tests étaient le sacrifié sur le totem de la production alors la qualité de la documentation n'imaginez même pas. Entre une spécification fournie par une MOA et une implémentation qui colle avec la réalité du terrain, vous venez de dériver la connaissance de vos business owners.
 
 Pendant des années, j'étais grand fan de la solution Confluence pour son
 approche Wiki. Diffuser la connaissance est une nécessité pour tendre vers
@@ -39,7 +39,7 @@ responsables du produit est souvent moins pertinente.
 En développant des utilitaires, pour gagner en engagement, la documentation
 est indispensable. Rapidement, l'évidence est de basculer sur la
 **Documentations as Code** pour simplifier son propre flux de travail.
-
+Il est plus simple de consulter la documentation dans le dépôt git pour retrouver la bonne info pour mes developpeurs que de parcourir du code. Il arrive même qu'un développeur vous réalise une pull request pour corriger une info.
 
 ## Pourquoi Docs As Code ?
 
@@ -67,6 +67,9 @@ Docs As Code est une approche qui traite la documentation comme du code :
 - qualité : on peut appliquer des validations automatiques,
 - collaboration : la documentation entre dans le même flux de travail que
   le développement.
+
+Le monde de l'Open Source nage avec aisance sur ce paradigme. La présence d'une documentation en ligne
+est souvent un facteur de maturité du produit. Il est plus agréable de parcourir un site web, que des fichiers markdown sur github. Des frameworks, utilitaires existent dans la mise en oeuvre. Parfois, vous n'êtes qu'à 3 commits de passer du brouillon à l'état de l'art.
 
 
 ## Quelle solution adaptée ?

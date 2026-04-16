@@ -38,7 +38,7 @@ responsables du produit est souvent moins pertinente.
 
 En développant des utilitaires, pour gagner en engagement, la documentation
 est indispensable. Rapidement, l'évidence est de basculer sur la
-**Documentations as Code** pour simplifier son propre flux de travail.
+**Documentation as Code** pour simplifier son propre flux de travail.
 Il est plus simple de consulter la documentation dans le dépôt git pour retrouver la bonne info pour mes developpeurs que de parcourir du code. Il arrive même qu'un développeur vous réalise une pull request pour corriger une info.
 
 ## Pourquoi Docs As Code ?
@@ -60,7 +60,20 @@ Docs As Code est une approche qui traite la documentation comme du code :
 - soumis à revue via merge requests / pull requests,
 - publié automatiquement par des pipelines CI/CD.
 
+Le monde de l'Open Source nage avec aisance sur ce paradigme. La présence d'une documentation en ligne
+est souvent un facteur de maturité du produit. Il est plus agréable de parcourir un site web, que des fichiers markdown sur github.
+
+### IA générative
+
+La documentation a porté d'ia agentique devrait plier l'argumentation. En rapprochant la doc du code vous allez vous mettre en capacité de donner du contexte pertinent à votre agent. Définissez des conventions d'arborescence et avec les bonnes règles d'instruction, vos requêtes devraient être optimisés en nombre de token.
+
+Si vous n'êtes pas du genre locace ou un peu trop enjouée, l'IA restructura votre propos avec une touche professionnel.
+
+Vous pourriez faire la même chose avec un mcp dédié a votre wiki (s'il en existe un). L'avantage c'est que vous n'aurez pas a le configurer et vous limiterez le nombre de requêtes nécessaire à son fonctionnement.
+
 ### Ce que cela change
+
+On le devinait par l'approche as code mais concrètement on se donne les moyens d'améliorer son produit par design.
 
 - cohérence : la documentation évolue avec le code et les sources,
 - traçabilité : on retrouve l'historique exact des modifications,
@@ -68,22 +81,25 @@ Docs As Code est une approche qui traite la documentation comme du code :
 - collaboration : la documentation entre dans le même flux de travail que
   le développement.
 
-Le monde de l'Open Source nage avec aisance sur ce paradigme. La présence d'une documentation en ligne
-est souvent un facteur de maturité du produit. Il est plus agréable de parcourir un site web, que des fichiers markdown sur github. Des frameworks, utilitaires existent dans la mise en oeuvre. Parfois, vous n'êtes qu'à 3 commits de passer du brouillon à l'état de l'art.
+Des frameworks, utilitaires existent dans la mise en oeuvre. Parfois, vous n'êtes qu'à 3 commits de passer du brouillon à l'état de l'art.
 
 
 ## Quelle solution adaptée ?
 
-Le choix d'une solution Docs As Code dépend du contexte du projet.
+Le choix d'une solution Docs As Code est multi-factorielle.
 
-### Critères de sélection
-
-- audience : documentation utilisateur, développeur, ou produit ?
-- format : pages statiques, guides API, tutoriels, notes d'architecture ?
-- complexité : besoin de recherche avancée, navigation multi-niveaux, ou
-  simple site de docs.
+* Quels sont mes compétences à disposition dans l'équipe?
+* quels sont les fonctionnalités obligatoires (recherche, navigation, docstring, ...) ?
+* Est-ce que je pars déjà d'un existant ?
+* Quels types d'informations ai-je besoin de mettre en forme (blog, swagger, notes d'architecture, guides)?
 
 ### Solutions courantes
+ 
+Lorsque vous démarrez de nul part. Il faut rester modeste pour avoir des gains immédiat. Une solution mettant en forme des fichiers markdown peut largement suffire avant d'explorer des alternatives. Votre README.md aura des compagnons de route et il sera plus facile d'accompagner un collectif.
+
+Personnellement, j'ai jeté mon dévolu pour mkdcos v1 vanilla, material4mkdocs puis zensical. En quelques heures,vous avez un site statique opérationnel avec des fonctionnalités avancées. Le faible investissement m'a donné un droit à l'erreur que je n'ai pas consommé.
+
+Cependant de puissantes solutions existent : 
 
 - `MkDocs` / `Zensical` : simple à configurer, bon pour les docs techniques et les guides
 - `Sphinx` : puissant pour la documentation Python et les docs complexes.
@@ -93,9 +109,9 @@ Le choix d'une solution Docs As Code dépend du contexte du projet.
   personnalisés.
 
 
-### Outils complémentaires
+### Outils complémentaires 
 
-- `Markdown` ou `reStructuredText` pour la rédaction,
+Pour parfaire votre pipeline, vous pouvez considérer les utilitaires :
 - `Vale` / `markdownlint` / `remark` pour le linting,
 - `htmlproofer` / `linkcheck` pour valider les liens,
 - `pandoc` pour les conversions quand nécessaire.
@@ -121,12 +137,6 @@ Le choix d'une solution Docs As Code dépend du contexte du projet.
 - génération : `mkdocs build`
 - publication : GitHub Pages ou GitLab Pages
 
-Avec un pipeline CI :
-
-- `checkout`
-- `pip install mkdocs mkdocs-material`
-- `mkdocs build`
-- `mkdocs serve` (preview locale) ou `mkdocs gh-deploy`
 
 ### Bonnes pratiques
 
@@ -134,7 +144,7 @@ Avec un pipeline CI :
   le contenu dépend directement d'une fonctionnalité,
 - utiliser des templates et des modèles pour homogénéiser les pages,
 - appliquer des règles de style et des validations automatiques,
-- automatiser la publication pour éviter les oublis,
+- automatiser la publication par défaut,
 - garder la documentation près du code pour limiter les décalages.
 
 ## Références

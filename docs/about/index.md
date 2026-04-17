@@ -1,6 +1,8 @@
-______________________________________________________________________
-
-## title: À propos hide: - toc
+---
+title: À propos
+hide:
+    - toc
+---
 
 ## À propos de Silicoman
 
@@ -18,7 +20,6 @@ Il s'agit d'un matériel personnel de support à l'apprentissage.
 Par conséquent, vous ne trouverez pas de contenu vibe codé.
 L'humain reste dans la boucle à chaque étape du processus de rédaction.
 
-______________________________________________________________________
-
+---
 Si vous souhaitez en savoir plus ou entrer en contact, n'hésitez pas à laisser
 un message via les réseaux sociaux mentionnés sur le site en pied de page.

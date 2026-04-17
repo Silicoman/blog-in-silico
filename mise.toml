@@ -1,3 +1,4 @@
 [tools]
 pre-commit = "latest"
 python = "3.13.11"
+vale = "latest"

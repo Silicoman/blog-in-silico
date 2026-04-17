@@ -155,7 +155,7 @@ et [Zensical](https://zensical.org/) : en quelques heures vous avez un site stat
 avec des fonctionnalités avancées. Le faible investissement permet d'itérer
 rapidement.
 
-!!! danger "avenir de l'éco-système mkdocs[^6]"
+!!! danger "Avenir de l'éco-système mkdocs[^6]"
     *Mkdocs v2* est en cours de developpement et est break-change.
     *Material for Mkdocs* a décidé de tourner la page et de créer *Zensical[^7]*.
     Cependant *Zensical* n'a pas encore porté toutes les fonctionnalités
@@ -191,16 +191,16 @@ Voici un tableau comparatif des solutions de *Static Site Generator* les plus co
 
 ### Outils complémentaires
 
+
 Pour parfaire votre pipeline, vous pouvez considérer les utilitaires :
 
 === "Linting"
-    | Nom | Type | Cas d'usage |
-    |:---|:---|
-    | [`Vale`](https://vale.sh/docs) | commandline | forte capacité de configuration |
+    | Nom | Type | A savoir |
+    |:---|:---|:---|
+    | [`Vale`](https://vale.sh/docs) | commandline | couvre tout format, forte capacité de configuration |
     | `markdownlintcli2` | npm lib | linting Markdown/CommonMark |
     | [`remark`](https://github.com/remarkjs/remark) | npm lib | complexe outils à base de plugins |
     | [mdformat](https://mdformat.readthedocs.io/en/stable/index.html) | python lib | CommonMark compliant Markdown formatter |
-
 
 === "Validation liens"
     `htmlproofer` / `linkcheck` pour valider les liens,
@@ -208,6 +208,11 @@ Pour parfaire votre pipeline, vous pouvez considérer les utilitaires :
 === "Conversion format"
     `pandoc`
     `mark`
+
+!!! warning "Utilisation des linters/formatters"
+    Les linters peuvent être incompatible avec le format demandé
+    par le SSG. Pour chaque linter, il faut identifier soit un plugin
+    dédié soit les règles personnalisées à appliquer.
 
 !!! tip "Combiner docs as code + Wiki"
     Au niveau de l'organisation, vous désirez combiner l'usage d'un

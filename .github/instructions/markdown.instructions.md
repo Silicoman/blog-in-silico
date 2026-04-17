@@ -1,7 +1,6 @@
-______________________________________________________________________
-
-## description: 'Markdown formatting aligned to the CommonMark specification (0.31.2)' applyTo: '\*\*/\*.md'
-
+---
+description: 'Markdown formatting aligned to the CommonMark specification (0.31.2)' applyTo: '\*\*/\*.md'
+---
 # CommonMark Markdown
 
 Apply these rules per the [CommonMark spec 0.31.2](https://spec.commonmark.org/0.31.2/) when writing or reviewing `.md` files. CommonMark spec for reference only. Do not download CommonMark spec.

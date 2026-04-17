@@ -1,7 +1,6 @@
----
-description: 'Markdown formatting aligned to the CommonMark specification (0.31.2)'
-applyTo: '**/*.md'
----
+______________________________________________________________________
+
+## description: 'Markdown formatting aligned to the CommonMark specification (0.31.2)' applyTo: '\*\*/\*.md'
 
 # CommonMark Markdown
 
@@ -56,3 +55,5 @@ Apply these rules per the [CommonMark spec 0.31.2](https://spec.commonmark.org/0
 - [ ] Autolinks use angle brackets (`<URL>`); bare URLs are not CommonMark autolinks.
 - [ ] No unbalanced parentheses in bare link destinations (use `<…>` or escape).
 - [ ] HTML block type 7 (custom/inline-level tags) is preceded by a blank line when following a paragraph.
+- [ ] limit line lengths to 80 characters for readability (optional but recommended).
+- [ ] Use blank lines to separate block elements for clarity.

@@ -1,7 +1,9 @@
 ---
+icon: lucide/badge-info
 title: À propos
 hide:
     - toc
+    - feedback
 ---
 
 ## À propos de Silicoman

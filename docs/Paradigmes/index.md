@@ -1,5 +1,7 @@
-# Paradigmes
-
+---
+icon: lucide/dna
+title: Paradigmes
+---
 Les paradigmes sont des cadres de pensée qui structurent la manière dont
 une équipe conçoit, organise et fait évoluer ses projets. Dans
 l’informatique, ils influencent les pratiques, les processus et les outils.

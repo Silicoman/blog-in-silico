@@ -1,12 +1,15 @@
 ---
+icon: lucide/file-text
 title: Documentation As Code
+tags:
+    - docs
 ---
 
 ## L'usage des Wikis au sein des projets
 
 En travaillant sur un projet, vous aurez tôt ou tard à affronter le problème
-de la documentation pas à jour ou de la documentation manquante, souvent
-perdue dans les limbes d'un répertoire partagé ou d'une GED.
+de la documentation. Soit elle n'est pas à jour, soit manquante, souvent
+perdue dans les limbes d'un répertoire partagé ou d'une GED/Sharepoint.
 
 Avec l'essor de l'agilité, une dérive fréquente a été l'inconsistance de la
 documentation lorsque celle-ci n'est pas maintenue au fil de l'eau. Si les
@@ -123,11 +126,29 @@ et vous limiterez le nombre de requêtes nécessaire à son fonctionnement.
 On le devinait par l'approche *As Code* mais concrètement on se donne
 les moyens d'améliorer son produit par design.
 
-- cohérence : la documentation évolue avec le code et les sources,
-- traçabilité : on retrouve l'historique exact des modifications,
-- qualité : on peut appliquer des validations automatiques,
-- collaboration : la documentation entre dans le même flux de travail que
-  le développement.
+<div class="grid cards" markdown>
+
+- :material-all-inclusive: __Cohérence__
+
+    ---
+    la documentation évolue avec le code et les sources
+
+- :material-all-inclusive: __Tracabilité__
+
+    ---
+    on retrouve l'historique exact des modifications
+
+- :material-all-inclusive: __Qualité__
+
+    ---
+    on peut appliquer des validations automatiques
+
+- :material-account-group-outline: __Collaboration__
+
+    ---
+    la documentation entre dans le même flux de travail que
+    le développement
+</div>
 
 Des frameworks, utilitaires existent dans la mise en oeuvre.
 Parfois, vous n'êtes qu'à 3 commits de passer du brouillon à l'état de l'art.
@@ -136,10 +157,10 @@ Parfois, vous n'êtes qu'à 3 commits de passer du brouillon à l'état de l'art
 
 Le choix d'une solution est multi-factorielle.
 
-* Quels sont mes compétences à disposition dans l'équipe?
+* Quels sont mes compétences à disposition dans l'équipe ?
 * quels sont les fonctionnalités obligatoires (recherche, navigation, docstring, ...) ?
 * Est-ce que je pars déjà d'un existant ?
-* Quels types d'informations ai-je besoin de mettre en forme (blog, swagger, notes d'architecture, guides)?
+* Quels types d'informations ai-je besoin de mettre en forme (swagger, notes d'architecture, guides) ?
 
 
 ### Solutions courantes *Static Site Generator* (SSG)
@@ -184,30 +205,35 @@ Voici un tableau comparatif des solutions de *Static Site Generator* les plus co
     | Markdown & MDX | UI moderne; support MDX; versioning intégré; écosystème de plugins | Plus lourd; nécessite JS/React; bundling et maintenance frontend | Documentation produit, sites avec blog et marketing |
 
 === "[Hugo](https://gohugo.io/)"
-    | Type | Avantages | Limites | Cas d'usage |
+    | Format | Avantages | Limites | Cas d'usage |
     |:---|:---|:---|:---|
-    | Générateurs statiques (Go) | Très flexibles; rapides; templating performant | Templating et configuration peuvent devenir complexes; écosystème dépendant du langage | Sites personnalisés, blogs, documentations sur mesure |
+    | markdown | Très flexibles; rapides; templating performant | Templating et configuration peuvent devenir complexes; écosystème dépendant du langage | Sites personnalisés, blogs, documentations sur mesure |
 
 
 ### Outils complémentaires
-
 
 Pour parfaire votre pipeline, vous pouvez considérer les utilitaires :
 
 === "Linting"
     | Nom | Type | A savoir |
     |:---|:---|:---|
-    | [`Vale`](https://vale.sh/docs) | commandline | couvre tout format, forte capacité de configuration |
-    | `markdownlintcli2` | npm lib | linting Markdown/CommonMark |
+    | [`Vale`](https://vale.sh/docs) | client | couvre tout format, forte capacité de configuration mais complexe |
+    | [`markdownlintcli2`](https://github.com/DavidAnson/markdownlint-cli2) | npm lib | linting Markdown/CommonMark |
     | [`remark`](https://github.com/remarkjs/remark) | npm lib | complexe outils à base de plugins |
-    | [mdformat](https://mdformat.readthedocs.io/en/stable/index.html) | python lib | CommonMark compliant Markdown formatter |
+    | [`mdformat`](https://mdformat.readthedocs.io/en/stable/index.html) | python lib | CommonMark compliant Markdown formatter |
 
 === "Validation liens"
-    `htmlproofer` / `linkcheck` pour valider les liens,
+    | Nom | Type | A savoir |
+    |:---|:---|:---|
+    | [`htmlproofer`](https://github.com/gjtorikian/html-proofer) | ruby | support HTML |
+    | [`linkcheck`](https://github.com/filiph/linkcheck) | client | support HTML mais aucune release depuis 2023|
+    | [`lychee`](https://github.com/lycheeverse/lychee) | client | support HMTL et markdown |
 
 === "Conversion format"
-    `pandoc`
-    `mark`
+    | Nom | Type | A savoir |
+    |:---|:---|:---|
+    | [`pandoc`](https://pandoc.org/) | client | convertisseur dans tout format |
+    | [`mark`](https://github.com/kovetskiy/mark) | client | synchro markdown vers confluence |
 
 !!! warning "Utilisation des linters/formatters"
     Les linters peuvent être incompatible avec le format demandé
@@ -218,26 +244,32 @@ Pour parfaire votre pipeline, vous pouvez considérer les utilitaires :
     Au niveau de l'organisation, vous désirez combiner l'usage d'un
     wiki d'entreprise et les capacités de l'approche docs-as-code.
     Vous pouvez utiliser des utilitaires pour synchroniser vos pages
-    markdown ou page html vers les pages du associé confluence.
+    markdown ou page html vers les pages associées du Confluence.
 
-## Processus simplifiée
+## Fonctionnement
 
 ### Structure
 
 Dans votre dépôt git, la convention est de créer un répertoire
-`docs` à la racine. Vous pourrez compléter la standardisation
-avec `docs/img`
+`docs` à la racine.
 
-1. Créer ou modifier un fichier Markdown dans le dépôt `docs/`.
-2. Ouvrir une merge request ou pull request.
-3. Exécuter une pipeline CI qui :
-   - valide le format Markdown,
-   - vérifie les liens internes et externes,
-   - génère une preview du site statique,
-   - produit éventuellement un rapport de qualité.
-4. Faire une revue de la documentation comme du code.
-5. Fusionner et publier automatiquement sur GitHub Pages ou GitLab Pages
+### Processus
 
+Le nouveau processus de rédaction de la documentation est le
+suivant :
+
+``` mermaid
+graph
+  A[Créer/Modifier un Markdown docs dans le dépôt] --> B;
+  B[Ouvrir une pull request] --> C;
+  C[Execution auto pipeline CI] --> D1;
+  C --> D2;
+  D1[Job: Validation synthaxe markdown] --> E;
+  D2[Job: Verification des liens] --> E;
+  E[Job: déploie une preview de la docs] --> F;
+  F[Revue/validation par un collaborateur de la pull request] --> G;
+  G[Merge et publication automatique sur Github/Gitlab Pages]
+```
 
 !!! tip "bonnes pratiques du quotidien"
     - versionner la documentation avec la même branche que le code lorsque
@@ -251,4 +283,4 @@ avec `docs/img`
 ## Resources
 
 Pour explorer davantage l'art de la documentation,
-je vous conseille de parcourir [writethedocs](https://www.writethedocs.org/guide)
+je vous recommande de parcourir [writethedocs.](https://www.writethedocs.org/guide)

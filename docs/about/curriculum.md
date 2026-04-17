@@ -1,8 +1,10 @@
 ---
+icon: lucide/contact-round
 title: Curriculum Vitae
 description: my personal cv, silicoman
 hide:
     - navigation
+    - feedback
 ---
 
 <img src="https://avatars.githubusercontent.com/u/11178020?v=4" alt="sicico" width="64" height="64" style="float:left; margin:0 1rem 1rem 0; border-radius:50%; object-fit:cover;" />

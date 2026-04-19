@@ -5,7 +5,7 @@ tags:
     - docs
 ---
 
-## L'usage des Wikis au sein des projets
+## :lucide-book-text: L'usage des Wikis au sein des projets
 
 En travaillant sur un projet, vous aurez tôt ou tard à affronter le problème
 de la documentation. Soit elle n'est pas à jour, soit manquante, souvent
@@ -54,7 +54,7 @@ retrouver la bonne info pour mes developpeurs que de parcourir du code.
 Il arrive même qu'un développeur vous réalise une pull request pour corriger
 une info.
 
-## Pourquoi Docs As Code ?
+## :lucide-telescope: Pourquoi Docs As Code ?
 
 !!! quote "@Eric Holscher & the Write the Docs community [^2]"
     Documentation as Code (Docs as Code) refers to a philosophy that you
@@ -89,7 +89,7 @@ Docs As Code est une approche qui traite la documentation comme du code :
     un utilitaire réalisant de la configuration as code des projets
     GitLab.
 
-### L'essor de l'IA générative
+### :lucide-brain-circuit: L'essor de l'IA générative
 
 !!! quote "L'IA un levier pour produire la documentation[^4]"
     Dans l'ensemble, les tendances observées ici sont très favorables à l'IA.
@@ -121,24 +121,24 @@ et vous limiterez le nombre de requêtes nécessaire à son fonctionnement.
 
 [^5]: [Documentation Hierarchisée, un article cio-online](https://www.cio-online.com/actualites/lire-developpement-l-ia-generative-aussi-a-besoin-d-une-bonne-documentation-du-code-15427.html)
 
-### Ce que cela change
+### :lucide-split: Ce que cela change
 
 On le devinait par l'approche *As Code* mais concrètement on se donne
 les moyens d'améliorer son produit par design.
 
 <div class="grid cards" markdown>
 
-- :material-all-inclusive: __Cohérence__
+- :lucide-blocks: __Cohérence__
 
     ---
     la documentation évolue avec le code et les sources
 
-- :material-all-inclusive: __Tracabilité__
+- :lucide-videotape: __Tracabilité__
 
     ---
     on retrouve l'historique exact des modifications
 
-- :material-all-inclusive: __Qualité__
+- :lucide-trending-up: __Qualité__
 
     ---
     on peut appliquer des validations automatiques
@@ -153,7 +153,7 @@ les moyens d'améliorer son produit par design.
 Des frameworks, utilitaires existent dans la mise en oeuvre.
 Parfois, vous n'êtes qu'à 3 commits de passer du brouillon à l'état de l'art.
 
-## Quelle solution adaptée ?
+## :lucide-library: Quelle solution adaptée ?
 
 Le choix d'une solution est multi-factorielle.
 
@@ -185,7 +185,7 @@ rapidement.
 
 [^6]: [La chute de mkdocs](https://fpgmaas.com/blog/collapse-of-mkdocs/)
 [^7]: [Annonce de la création Zensical](https://squidfunk.github.io/mkdocs-material/blog/archive/2025/)
-[^8]: [Etude migration depuis mkdocs](https://github.com/ddev/ddev/issues/8216)
+[^8]: [Etude migration depuis mkdocs du projet ddev](https://github.com/ddev/ddev/issues/8216)
 
 Voici un tableau comparatif des solutions de *Static Site Generator* les plus courantes :
 
@@ -210,7 +210,7 @@ Voici un tableau comparatif des solutions de *Static Site Generator* les plus co
     | markdown | Très flexibles; rapides; templating performant | Templating et configuration peuvent devenir complexes; écosystème dépendant du langage | Sites personnalisés, blogs, documentations sur mesure |
 
 
-### Outils complémentaires
+### :lucide-wrench: Outils complémentaires
 
 Pour parfaire votre pipeline, vous pouvez considérer les utilitaires :
 
@@ -246,7 +246,7 @@ Pour parfaire votre pipeline, vous pouvez considérer les utilitaires :
     Vous pouvez utiliser des utilitaires pour synchroniser vos pages
     markdown ou page html vers les pages associées du Confluence.
 
-## Fonctionnement
+## :lucide-biceps-flexed: Fonctionnement
 
 ### Structure
 
@@ -284,3 +284,5 @@ graph
 
 Pour explorer davantage l'art de la documentation,
 je vous recommande de parcourir [writethedocs.](https://www.writethedocs.org/guide)
+writethedocs aggrége de nombreux guides, il y aura surement des réponses à
+vos interrogations.

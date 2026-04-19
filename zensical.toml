@@ -18,10 +18,13 @@ language = "fr"
 
 # Zensical provides a number of feature toggles that change the behavior
 # of the documentation site.
+[project.theme]
+# Feature toggles for Zensical's theme (moved under project.theme so the
+# theme picks them up correctly).
 features = [
-    "announce.dismiss",
-    "content.code.annotate",
-    "content.code.copy",
+     "announce.dismiss",
+     "content.code.annotate",
+     "content.code.copy",
     "content.code.select",
     "content.footnote.tooltips",
     "content.tabs.link",

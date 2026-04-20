@@ -181,8 +181,13 @@ hide:
 - Convention over configuration (si applicable)
 
 ## Limitations
-- Écosystème de plugins plus réduit que les grands SSG
-- Fonctionnalités spécifiques manquantes pour sites très complexes
+
+5 mois après l'annonce, Zensical possède suffisamment de fonctionnalité pour se
+débarasser d'un mkdocs v1 (vanilla) et de moderniser sa documentation.
+
+En revanche, pour les personnes qui profitaient de l'écosystème de
+plugins de mkdocs, il est encore trop tôt pour couvrir 100% lors de la migration.
+
 
 
 ## Annexes

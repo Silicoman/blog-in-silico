@@ -22,6 +22,15 @@ Il s'agit d'un matériel personnel de support à l'apprentissage.
 Par conséquent, vous ne trouverez pas de contenu vibe codé.
 L'humain reste dans la boucle à chaque étape du processus de rédaction.
 
+## Pourquoi maintenir un blog ?
+
+Etre tech writer, est une compétence qui s'affine par l'exercice.
+Personnellement, je tombe rarement sur du contenu francophone
+en dehors des blogposts de société de service. Ayant l'habitude de
+poncer jusqu'à la corde les documentations, je me dis autant en faire
+profiter. Vous pourrez voir ma maigre contribution pour ajouter
+un peu de diversité.
+
 ---
 Si vous souhaitez en savoir plus ou entrer en contact, n'hésitez pas à laisser
 un message via les réseaux sociaux mentionnés sur le site en pied de page.

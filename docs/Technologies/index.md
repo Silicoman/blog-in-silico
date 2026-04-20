@@ -5,7 +5,7 @@ hide:
     - toc
 ---
 
-Cette section présente l'étude des composants techniques et des technologies.
+Cette section présente l'étude de composant technique et de technologie.
 
 ## Objectifs
 

@@ -1,4 +1,4 @@
----
+tu---
 title: Zensical, Static Site Generator
 tags:
     - docs
@@ -103,7 +103,9 @@ uv run zensical serve  # --port 8000
 ```
 4. Vérifier la sortie dans votre navigateur [localhost:8000](http://localhost:8000)
 
-A ce stade, vous avez votre première démo d'un site statique opérationnel.
+A ce stade, vous avez votre première démo d'un site statique opérationnel en local. Vous pouvez modifier
+les pages, elles seront rechargés dans le navigateur 
+à la volée.
 
 - **docs**: Dossier source des pages Markdown (documentation à éditer).
 - **pyproject.toml**: Configuration du projet Python (métadonnées et dépendances).
@@ -112,12 +114,64 @@ A ce stade, vous avez votre première démo d'un site statique opérationnel.
 - **uv.lock**: Lockfile géré par uv — enregistre versions/dépendances.
 - **zensical.toml**: Configuration spécifique à Zensical (paramètres du SSG/site).
 
+!!! tip "groupe de dépendance par uv"
+    Dans le cas où votre doc cohabite avec votre code,
+    il est judicieux de déclarer la librairie dans un
+    groupe tiers exemple : docs. Cela optimisera le
+    temps de build et simplifiera l'expérience de
+    démarrage de vos tech writers si vous utilisez des lib
+    exotiques dépendantes du hardware.
+ 
+On peut déjà tirer une première conclusion, que la mise
+en place est d'une simplicité déconcertante. Je peux modifier l'index.md et avoir un premiere boucle feedback.
 
 ### Fonctionnalités disponibles
 
-- Création et rendu d'une page simple
-- Ajout et optimisation d'images
-- Gestion des métadonnées (tags, catégories, taxonomies)
+#### zensical.toml
+
+Le coeur des modifications de votre site vont être
+centraliser dans le zensical.toml. 
+Certaines configurations vont suivre la pratique de
+convention over configuration ce qui permet d'avoir
+certains effets magique comme la détection automatique
+des nouvelles pages ajoutées appréciable pour démarrer.
+
+!!! warning "navigation des pages"
+    Cependant, tôt ou tard, il faudra déclarer l'option
+    nav pour gérer finement l'ordre d'affichage des pages.
+    L'ordre alphabétique a des limites si vous ne l'avez
+    pas pris en compte par design.
+
+
+#### contenu d'une page
+
+Jusqu'à présent, vous avez probablement modifié des
+Readme avec un rendu par github ou gitlab.
+
+!!! warning "l'interprétation markdown"
+    a savoir que le format markdown possède plusieurs
+    spécifications. Un Readme github n'a pas le même
+    comportement que sur gitlab. Une spécification
+    CommonMarkdown a émergé pour stopper les divergences.
+    Des dissonances sont donc à prévoir si vous cherchez
+    allier les deux mondes, lecture sur SSG et github.
+
+Lorsque vous rédigez une page, vous devez ajouter
+une première section metadata de votre page.
+Elle vous sera très pratique à long terme. Elle
+vous permet de personnaliser l'expérience.
+
+```markdown
+---
+title: my first page
+tags:
+hide:
+---
+
+## my chapter
+(...)
+```
+
 - Templates, inclusions et layouts
 - Rebuild incrémental / mode watch
 

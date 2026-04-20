@@ -1,4 +1,4 @@
-tu---
+---
 title: Zensical, Static Site Generator
 tags:
     - docs
@@ -22,7 +22,9 @@ afin de lever toutes les contraintes qu'ils subissaient jusqu'à présent.
 Il est né du besoin d'offrir une expérience de documentation moderne et
 cohérente — comparable à celle fournie par Material for MkDocs — sans
 rester lié à l'écosystème MkDocs. Cependant, afin de financer leur travail,
-ils proposent du support commercial avec leur offre `Zensical Spark` pour
+En revanche, pour les personnes qui profitaient de l'écosystème de
+ils proposent du support commercial avec leur offre
+[`Zensical Spark`](https://zensical.org/spark/tiers) pour
 faciliter la migration.
 
 !!! quote
@@ -104,15 +106,19 @@ uv run zensical serve  # --port 8000
 4. Vérifier la sortie dans votre navigateur [localhost:8000](http://localhost:8000)
 
 A ce stade, vous avez votre première démo d'un site statique opérationnel en local. Vous pouvez modifier
-les pages, elles seront rechargés dans le navigateur 
+les pages, elles seront rechargés dans le navigateur
 à la volée.
 
-- **docs**: Dossier source des pages Markdown (documentation à éditer).
-- **pyproject.toml**: Configuration du projet Python (métadonnées et dépendances).
-- **README.md**: Présentation du projet, instructions d'installation et usage.
-- **site**: Site statique généré (HTML/CSS/JS — sortie de build) à ajouter en .gitignore
-- **uv.lock**: Lockfile géré par uv — enregistre versions/dépendances.
-- **zensical.toml**: Configuration spécifique à Zensical (paramètres du SSG/site).
+```text
+├── docs : Dossier source des pages Markdown (documentation à éditer).
+|   ├── index.md : page d'accueil de votre documentation
+|   └── markdown.md : page titre markdown (surcharger par title)
+├── pyproject.toml : Configuration du projet Python (métadonnées et dépendances).
+├── README.md : Présentation du projet, instructions d'installation et usage.
+├── site : Site statique généré (HTML/CSS/JS — sortie de build) à ajouter en .gitignore
+├── uv.lock : Lockfile géré par uv — enregistre versions/dépendances.
+└── zensical.toml : Configuration spécifique à Zensical (paramètres du SSG/site).
+```
 
 !!! tip "groupe de dépendance par uv"
     Dans le cas où votre doc cohabite avec votre code,
@@ -121,7 +127,7 @@ les pages, elles seront rechargés dans le navigateur
     temps de build et simplifiera l'expérience de
     démarrage de vos tech writers si vous utilisez des lib
     exotiques dépendantes du hardware.
- 
+
 On peut déjà tirer une première conclusion, que la mise
 en place est d'une simplicité déconcertante. Je peux modifier l'index.md et avoir un premiere boucle feedback.
 
@@ -130,7 +136,7 @@ en place est d'une simplicité déconcertante. Je peux modifier l'index.md et av
 #### zensical.toml
 
 Le coeur des modifications de votre site vont être
-centraliser dans le zensical.toml. 
+centraliser dans le zensical.toml.
 Certaines configurations vont suivre la pratique de
 convention over configuration ce qui permet d'avoir
 certains effets magique comme la détection automatique
@@ -161,11 +167,9 @@ une première section metadata de votre page.
 Elle vous sera très pratique à long terme. Elle
 vous permet de personnaliser l'expérience.
 
-```markdown
+```markdown {linenums="1 1 2"}
 ---
 title: my first page
-tags:
-hide:
 ---
 
 ## my chapter
@@ -175,20 +179,49 @@ hide:
 - Templates, inclusions et layouts
 - Rebuild incrémental / mode watch
 
-## Points forts (exemples)
-- Simplicité d'usage pour les rédacteurs
-- Intégration des bonnes pratiques UX héritées de Material
-- Convention over configuration (si applicable)
 
-## Limitations
+### Déployer sur pages
 
-5 mois après l'annonce, Zensical possède suffisamment de fonctionnalité pour se
-débarasser d'un mkdocs v1 (vanilla) et de moderniser sa documentation.
+
+
+## Evaluations
+
+!!! info "fonctionnalités testées"
+    A date, je n'ai pas testé les options comme l'analytics, versioning et
+    comment system. Cette revue pourra à terme évoluer.
+
+### Points forts
+
+Ce que l'on apprécie de Zensical :
+
+- un démarrage très rapide
+- de nombreuse fonctionnalité disponible par défaut
+- un rendu moderne sans rien faire
+- une courbe d'apprentissage progressive pour monter en puissance
+dans la personnalisation
+- une documentation très complète
+- le projet intègre [pymdown-extensions](https://facelessuser.github.io/pymdown-extensions/extensions) qui contient des options et exemples avancés
+
+### Limitations
+
+5 mois après l'annonce, Zensical possède suffisamment de fonctionnalité pour
+migrer d'un mkdocs v1 (vanilla) et de moderniser sa documentation.
 
 En revanche, pour les personnes qui profitaient de l'écosystème de
-plugins de mkdocs, il est encore trop tôt pour couvrir 100% lors de la migration.
+plugins de mkdocs, il est encore tôt pour couvrir 100% lors de la migration.
 
+Pour certains de mes usages en entreprise, il me manque :
 
+- la partie révision git avec les dates de dernière modification et d'auteur
+- l'option commandline `--site-dir` est manquante pour faire une preview en CI
+- les raccourcis en footer des social cards n'est pas totalement intégré dans le toml
+
+Il faudrait également qu'à terme, les fonctionnalités suivantes se debloquent :
+
+- le moteur d'extension par plugin (pour que la communauté s'adapte)
+- le mode blog, liste des derniers articles par date de publication
+- l'affichage des pages par tags
+- mkdocstrings est encore partiel
 
 ## Annexes
 - Liens : dépôt officiel, documentation, changelog.

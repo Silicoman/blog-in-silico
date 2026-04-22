@@ -1,5 +1,6 @@
 ---
 title: Zensical, Static Site Generator
+description: tutoriel mise en oeuvre Zensical
 tags:
     - docs
     - SSG
@@ -22,8 +23,7 @@ afin de lever toutes les contraintes qu'ils subissaient jusqu'à présent.
 Il est né du besoin d'offrir une expérience de documentation moderne et
 cohérente — comparable à celle fournie par Material for MkDocs — sans
 rester lié à l'écosystème MkDocs. Cependant, afin de financer leur travail,
-En revanche, pour les personnes qui profitaient de l'écosystème de
-ils proposent du support commercial avec leur offre
+En revanche, ils proposent du support commercial avec leur offre
 [`Zensical Spark`](https://zensical.org/spark/tiers) pour
 faciliter la migration.
 
@@ -52,7 +52,8 @@ des projets devant migrer et de l'historique des *stars* github, la communauté
 ### Licence OpenSource
 
 Au première abord, on pourrait douter sur la question du modèle économique
-de l'entreprise Zensical.
+de l'entreprise Zensical. L'écosystème des SSG est déjà bien rempli avec par
+exemple Astro, Hugo, Jerkyll ou Sphinx.
 Cependant, à la différence d'une startup qui débarque de nul part,
 Martin Donath a maintenu pendant 10 ans en licence MIT son projet material
 à travers des dons (200K/an[^3] à la fin).
@@ -69,7 +70,7 @@ pour des intégrations avec des solutions maison.
 
 Le sujet est à surveiller mais je suis plutôt confiant que dans 6-12 mois,
 la licence sera toujours permissive et que l'on est à disposition la très
-grande majorité des fonctionnalités.
+grande majorité des fonctionnalités de ce qu'on trouve en opensource.
 
 [^3]: [Interview Martin Donath](https://talkpython.fm/episodes/show/542/zensical-a-modern-static-site-generator)
 [^4]: [Equipe Zensical](https://zensical.org/about/team/)
@@ -126,7 +127,7 @@ les pages, elles seront rechargés dans le navigateur
     groupe tiers exemple : docs. Cela optimisera le
     temps de build et simplifiera l'expérience de
     démarrage de vos tech writers si vous utilisez des lib
-    exotiques dépendantes du hardware.
+    exotiques dépendantes du hardware. `uv add --group=docs zensical`
 
 On peut déjà tirer une première conclusion, que la mise
 en place est d'une simplicité déconcertante. Je peux modifier l'index.md et avoir un premiere boucle feedback.
@@ -136,9 +137,10 @@ en place est d'une simplicité déconcertante. Je peux modifier l'index.md et av
 #### zensical.toml
 
 Le coeur des modifications de votre site vont être
-centraliser dans le zensical.toml.
+centraliser dans le fichier `zensical.toml`.
 Certaines configurations vont suivre la pratique de
-convention over configuration ce qui permet d'avoir
+`convention over configuration`. Un ensemble de fonctionnalité
+est ainsi par défaut activé. Cela permet d'avoir
 certains effets magique comme la détection automatique
 des nouvelles pages ajoutées appréciable pour démarrer.
 
@@ -148,8 +150,30 @@ des nouvelles pages ajoutées appréciable pour démarrer.
     L'ordre alphabétique a des limites si vous ne l'avez
     pas pris en compte par design.
 
+Vous avez un certains nombre de feature à activer/désactiver pour
+modifier l'expérience du panneau de navigation. Vous pouvez intégrer
+le toc dans votre navigation, intégré du tracking, déplacer en header
+une partie de la navigation. Tout dépendra du contenu que vous voulez
+mettre en forme.
 
-#### contenu d'une page
+Parmis les premières personnalisations que vous allez pouvoir
+mettre en place c'est de modifier le theme à travers les couleurs
+ou les fonts utilisés.
+
+```text
+[project.theme]
+palette.primary = "orange"
+palette.accent = "orange"
+font.text = "Inter"
+font.code = "JetBrains Mono"
+```
+
+Vous pouvez ajouter le dark mode. Pour aller plus loin, il est
+toujours possible de [déclarer votre propre css](https://zensical.org/docs/setup/colors/#custom-color-schemes).
+
+A terme, vous pourrez regarder la partie surcharge des pages html.
+
+#### Contenu d'une page
 
 Jusqu'à présent, vous avez probablement modifié des
 Readme avec un rendu par github ou gitlab.
@@ -158,31 +182,104 @@ Readme avec un rendu par github ou gitlab.
     a savoir que le format markdown possède plusieurs
     spécifications. Un Readme github n'a pas le même
     comportement que sur gitlab. Une spécification
-    CommonMarkdown a émergé pour stopper les divergences.
+    CommonMark[^7] a émergé pour stopper les divergences.
     Des dissonances sont donc à prévoir si vous cherchez
     allier les deux mondes, lecture sur SSG et github.
 
+[^7]: [A strongly defined, highly compatible specification of Markdown](https://commonmark.org/)
+
 Lorsque vous rédigez une page, vous devez ajouter
-une première section metadata de votre page.
+une première section metadata, `Front matter`, de votre page.
 Elle vous sera très pratique à long terme. Elle
-vous permet de personnaliser l'expérience.
+vous permet de personnaliser l'expérience en désactivant les
+fonctionnalités précedemment activer avec le mot clef `hide`.
+Il n'est pas nécessaire d'activer un TOC quand la page html tient
+sur un écran où que vous réalisiez une page d'accueil.
 
 ```markdown {linenums="1 1 2"}
 ---
 title: my first page
+description: my description page
 ---
 
 ## my chapter
 (...)
 ```
 
-- Templates, inclusions et layouts
-- Rebuild incrémental / mode watch
+On ne va pas détailler comment rédiger un markdown mais à savoir que
+vous avez une prise en charge des formules mathématiques, des schémas
+mermaid, des admonitions, code blocks, tableau, tableau à onglet, footnotes,
+grilles, émojis, de preview de snippet, de l'html dans le markdown,
+de glossaire. Une grande partie sont visibles sur la page de démo générée.
+Certaines fonctions de [python markdown extensions](https://facelessuser.github.io/pymdown-extensions/) ne sont pas officielement pris en charge mais peuvent etre
+fonctionnelles.
+Vous pouvez documenter l'api de votre librairie avec [mkdocstrings](https://zensical.org/docs/setup/extensions/mkdocstrings/).
+
+Ce qui intéressant à savoir c'est que vous pouvez implémenter un template
+jinja et surcharger la page html.
 
 
 ### Déployer sur pages
 
+Pour déployer rapidement, vous pouvez utiliser les services
+à disposition sur github du free plan.
+Votre dépôt devra être public et vous serez limité à un site[^8].
 
+[^8]: [Découvrez les limites et limitations de GitHub Pages](https://docs.github.com/fr/pages/getting-started-with-github-pages/github-pages-limits)
+
+=== "Github Pages"
+    ```yaml
+    name: Documentation
+    on:
+      push:
+        branches:
+          - main
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    jobs:
+      deploy:
+        environment:
+          name: github-pages
+          url: ${{ steps.deployment.outputs.page_url }}
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/configure-pages@v6
+          - uses: actions/checkout@v5
+          - uses: actions/setup-python@v5
+            with:
+              python-version: 3.13.x
+          - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b
+          - run: uv sync --no-dev
+          - run: uv run zensical build --clean
+          - uses: actions/upload-pages-artifact@v5
+            with:
+              path: site
+          - uses: actions/deploy-pages@v5
+            id: deployment
+    ```
+
+=== "GitLab Pages"
+    ```yaml
+    stages:
+      - deploy
+    pages-deploy:
+      stage: deploy
+      image: dhi.io/uv:0-debian13-dev
+      script:
+        - uv sync --no-dev
+        - uv run zensical build --clean
+      pages: true
+        publish: site
+      rules:
+        - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    ```
+
+!!! tip hébergement
+    Pour utiliser d'autres services d'hébergement en free plan, vous pouvez
+    consulter [readthedocs](https://docs.readthedocs.com/platform/stable/index.html)
+    qui est une référence dans la communauté OpenSource.
 
 ## Evaluations
 
@@ -212,16 +309,19 @@ plugins de mkdocs, il est encore tôt pour couvrir 100% lors de la migration.
 
 Pour certains de mes usages en entreprise, il me manque :
 
-- la partie révision git avec les dates de dernière modification et d'auteur
-- l'option commandline `--site-dir` est manquante pour faire une preview en CI
-- les raccourcis en footer des social cards n'est pas totalement intégré dans le toml
+- [ ] la partie révision git avec les dates de dernière modification et d'auteur
+- [ ] l'option commandline `--site-dir` est manquante pour faire une preview en CI. Il faudra jongler dans l'étape script du job.
+- [ ] les raccourcis en footer des social cards n'est pas totalement intégré dans le toml
 
 Il faudrait également qu'à terme, les fonctionnalités suivantes se debloquent :
 
-- le moteur d'extension par plugin (pour que la communauté s'adapte)
-- le mode blog, liste des derniers articles par date de publication
-- l'affichage des pages par tags
-- mkdocstrings est encore partiel
+- [ ] le moteur d'extension par plugin (pour que la communauté s'adapte/innove)
+- [ ] le mode blog, liste des derniers articles par date de publication
+- [ ] l'affichage des pages par tags
+- [ ] mkdocstrings est encore partiel
+- [ ] prise en charge CommonMark
 
-## Annexes
-- Liens : dépôt officiel, documentation, changelog.
+Globalement, le résultat est plutôt bon. Pour un projet si jeune, je ne
+vais pas chercher à comparer fonction par fonction avec d'autres SSG.
+Je suis assez satisfait pour continuer à rédiger sur Zensical et porter
+les migrations (légère) de mkdocs.

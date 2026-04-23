@@ -80,7 +80,7 @@ Docs As Code est une approche qui traite la documentation comme du code :
     Le monde de l'Open Source nage avec aisance sur ce paradigme.
     La présence d'une documentation en ligne
     est souvent un facteur de maturité du produit. Il est plus agréable
-    de parcourir un site web, que des fichiers markdown sur github.
+    de parcourir un site web, que des fichiers markdown sur Github.
     Si on regarde par exemple le projet Gitlabform[^3], malgré sa faible
     notoriété avec <500 stars, possède une documentation très complète
     qui démontre sa pertinence.

@@ -1,16 +1,18 @@
 ---
 title: Zensical, Static Site Generator
-description: tutoriel mise en oeuvre Zensical
+description: "Qu'est-ce que Zensical ? Plongeons dans l'histoire de Zensical.
+Evaluons ces points forts et points faibles dans la mise en oeuvre de ce static site generator pour la documentation."
+
 tags:
     - docs
     - SSG
 ---
 
-Zensical est un site static generator (SSG). Il vous permet de générer un site
+Zensical est un site static generator SSG. Il vous permet de générer un site
 statique à partir de fichier markdown. Il devrait à terme prendre en charge
 le standard CommonMark. L'équipe derrière le projet possède une dizaine
 d'années d'expérience sur les problématiques de SSG. Combiné avec un
-développement en Rust, l'équipe a toutes les chances de mettre en oeuvre
+développement en Rust + Python, l'équipe a toutes les chances de mettre en oeuvre
 un moteur robuste et efficace.
 
 ## A l'origine de Zensical
@@ -81,8 +83,10 @@ grande majorité des fonctionnalités de ce qu'on trouve en opensource.
 
 !!! tip "uv"
     Afin d'avoir un venv dynamique, de gérer les dépendances, je
-    détaille le mode opératoire avec **uv**. Vous pouvez reproduire
-    avec **pip**.[^5]
+    détaille le mode opératoire avec **uv**. Ce mode opératoire est
+    la voie à suivre dans le cas d'un projet python avec son `pyproject.toml`.
+    Vous pouvez cependant reproduire avec **pip**.[^5] Vous pouvez pin la version
+    avec un `requirements.txt`.
 
 [^5]: [Guide installation Zensical](https://zensical.org/docs/get-started/#install-with-pip-linux)
 
@@ -205,6 +209,19 @@ description: my description page
 ## my chapter
 (...)
 ```
+
+!!! quote "use meta tags @readthedocs[^10]"
+    Moz.com, an authority on search engine optimization, makes the following suggestions for meta descriptions:
+
+    * Your meta description should have the most relevant content of the page.
+    A searcher should know whether they’ve found the right page from the description.
+
+    * The meta description should be between 150-300 characters and
+    it may be truncated down to around 150 characters in some situations.
+
+    * Meta descriptions are used for display but not for ranking.
+
+[^10]: [How to do search engine optimization (SEO) for documentation projects](https://docs.readthedocs.com/platform/stable/guides/technical-docs-seo-guide.html)
 
 On ne va pas détailler comment rédiger un markdown mais à savoir que
 vous avez une prise en charge des formules mathématiques, des schémas

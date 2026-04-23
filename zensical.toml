@@ -22,9 +22,9 @@ language = "fr"
 # Feature toggles for Zensical's theme (moved under project.theme so the
 # theme picks them up correctly).
 features = [
-     "announce.dismiss",
-     "content.code.annotate",
-     "content.code.copy",
+    "announce.dismiss",
+    "content.code.annotate",
+    "content.code.copy",
     "content.code.select",
     "content.footnote.tooltips",
     "content.tabs.link",
@@ -50,16 +50,59 @@ scheme = "default"
 toggle.icon = "lucide/sun"
 toggle.name = "Switch to dark mode"
 primary = "deep purple"
+accent = "orange"
 
 [[project.theme.palette]]
 scheme = "slate"
 toggle.icon = "lucide/moon"
 toggle.name = "Switch to light mode"
 primary = "lime"
-
+accent = "orange"
 # ----------------------------------------------------------------------------
 # The "extra" section contains miscellaneous settings.
 # ----------------------------------------------------------------------------
 [[project.extra.social]]
 icon = "fontawesome/brands/linkedin"
 link = "https://www.linkedin.com/in/louisbourguignon/"
+
+## Default extensions from zensical
+
+[project.markdown_extensions.abbr]
+[project.markdown_extensions.admonition]
+[project.markdown_extensions.attr_list]
+[project.markdown_extensions.def_list]
+[project.markdown_extensions.footnotes]
+[project.markdown_extensions.md_in_html]
+[project.markdown_extensions.toc]
+permalink = true
+[project.markdown_extensions.pymdownx.arithmatex]
+generic = true
+[project.markdown_extensions.pymdownx.betterem]
+[project.markdown_extensions.pymdownx.caret]
+[project.markdown_extensions.pymdownx.details]
+[project.markdown_extensions.pymdownx.emoji]
+emoji_generator = "zensical.extensions.emoji.to_svg"
+emoji_index = "zensical.extensions.emoji.twemoji"
+[project.markdown_extensions.pymdownx.highlight]
+anchor_linenums = true
+line_spans = "__span"
+pygments_lang_class = true
+[project.markdown_extensions.pymdownx.inlinehilite]
+[project.markdown_extensions.pymdownx.keys]
+[project.markdown_extensions.pymdownx.magiclink]
+[project.markdown_extensions.pymdownx.mark]
+[project.markdown_extensions.pymdownx.smartsymbols]
+[project.markdown_extensions.pymdownx.superfences]
+custom_fences = [
+  { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" }
+]
+[project.markdown_extensions.pymdownx.tabbed]
+alternate_style = true
+combine_header_slug = true
+[project.markdown_extensions.pymdownx.tasklist]
+custom_checkbox = true
+[project.markdown_extensions.pymdownx.tilde]
+
+# Custom extensions
+[project.markdown_extensions.pymdownx.snippets]
+auto_append = ["include_docs/abbreviations.md"]

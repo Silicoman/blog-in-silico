@@ -1,2 +1,5 @@
-\*\[HTML\]: Hyper Text Markup Language
-\*\[W3C\]: World Wide Web Consortium
+*[DSI]: Direction des Systèmes d'Information
+*[HTML]: Hyper Text Markup Language
+*[MCO]: Maintien en Condition Opérationnelle
+*[SSG]: Site Static Generator
+*[W3C]: World Wide Web Consortium

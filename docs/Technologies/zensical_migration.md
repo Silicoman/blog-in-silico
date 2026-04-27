@@ -1,71 +1,81 @@
 ---
-title: Migrer de Mkdocs vers Zensical
-description: "un tutoriel pour réaliser vos migrations de mkdocs vanilla,
-material for mkdocs vers le site static generator Zensical"
+title: Migrer de MkDocs vers Zensical
+description: "Tutoriel pour migrer une documentation MkDocs
+(ou Material for MkDocs) vers le générateur statique Zensical."
 tags:
     - docs
     - migration
 ---
 
+Ce guide décrit les étapes pour migrer une documentation basée sur **MkDocs**
+(ou **Material for MkDocs**) — `mkdocs.yml` + dossier `docs/` — vers **Zensical**.
 
-Ce mode opératoire décrit les grandes lignes pour migrer une documentation
-basée sur **MkDocs** ou **Material For MkDocs** (`mkdocs.yml` +
-dossier `docs/`) vers **Zensical**.
-
-!!! warning "compatibilités de l'écoystème"
-    Si vous avez des usages poussés des plugins MkDocs, il
-    est probable que ce guide et l'état actuel de Zensical ne
-    remplisse pas 100% des capacités.
+!!! warning "Compatibilité de l'écosystème"
+        Si vous utilisez intensivement des plugins MkDocs, il est possible que ce
+        guide et l'état actuel de Zensical ne couvrent pas toutes les
+        fonctionnalités. Procédez par étapes.
 
 ## Migrer les dépendances
 
-Si jusqu'à présent, vous utilisiez un `requirements.txt`, vous pouvez supprimer
-l'ensemble des dépendances déclarées pour MkDocs.
-Dans le cas de uv, vous pouvez executer `uv remove mkdocs` pour que l'uv.lock
-soit mise à jour.
-
-!!! info "Des dépendances désormais implicites"
-    La librairie Zensical possède en dépendance des extensions python.
-    Elle gère ainsi la compatibilité des versions des librairies
-    supportées présentées. Vous n'avez donc plus à vous soucier des éléments
-    nécessaire décrite dans la documentation Zensical[^1].
-
-[^1]: [Extensions prise en charge officiellement](https://zensical.org/docs/setup/extensions/)
-Vous pouvez ajouter la librairie `zensical` avec le choix que vous désirez.
+Si votre projet utilisait un `requirements.txt`, vous pouvez supprimer les
+dépendances spécifiques à MkDocs. Si vous utilisez un gestionnaire de
+dépendances comme `uv` (optionnel), vous pouvez exécuter :
 
 ```bash
-uv add zensical --group=docs;
-uv sync;
+# avec uv (exemple)
+uv remove mkdocs
+uv remove mkdocs-material
+uv add zensical --group=docs
+uv sync
+
+# ou sans uv :
+pip install zensical
 ```
+
+!!! info "Dépendances implicites"
+        La distribution `zensical` embarque ou requiert certaines extensions
+        Markdown courantes. Elle gère ainsi la compatibilité des versions des
+        extensions. Consultez la documentation officielle[^1] pour la
+        liste des extensions prises en charge et leur configuration par défaut.
+
+[^1]: [Extensions prises en charge (Zensical)](https://zensical.org/docs/setup/extensions/)
 
 ## Portage des configurations
 
 !!! tip "zensical.toml et mkdocs.yml"
-    Zensical garantit une compatibilité dans l'interprétation du fichier
-    `mkdocs.yml`. Il s'agit d'un bon point de départ.
+        Zensical sait interpréter de base un `mkdocs.yml` — c'est un bon point de
+        départ pour vérifier le rendu avant de convertir définitivement la
+        configuration en `zensical.toml`.
 
-L'ensemble des modifications doivent être réalisé sur le fichier
-`mkdocs.yml`. Le portage au format toml pourra être réaliser une fois
-que la migration soit satisfaisante.
+Pendant la phase de migration, effectuez les modifications dans `mkdocs.yml`
+et vérifiez le rendu localement :
 
-A tout moment vous pouvez vérifier l'état des logs et du rendu par execution de
-`zensical serve` ou `uv run zensical serve`.
-Puis consulter [localhost](http://localhost:8000).
+```bash
+# servir localement (si zensical est installé)
+zensical serve
+
+# ou via uv
+uv run zensical serve
+
+# puis ouvrir http://localhost:8000
+```
+
+Une fois le rendu satisfaisant, convertissez progressivement la configuration
+vers `zensical.toml` (format TOML), en regroupant les options sous
+`[project]`, `[markdown]`, `[build]`, etc.
 
 ### Gestion des features et plugins
 
-1. Supprimer la section `plugins`
-    Cette fonction n'est pas encore présente dans Zensical et certaines
-    fonctions sont natives à Zensical
+1. Plugins (section à supprimer)
+        - La section `plugins` de MkDocs peut contenir des fonctions non prises
+            en charge telles quelles. A valider dans la roadmap Zensical.
 
-2. Explicite les configurations preset
-    Etant donné que MkDocs avait très peu de markdown_extensions actifs
-    par défaut, il est probable que vous ayez ajouter des configurations.
-    Vous devrez alors expliciter l'ensemble des configurations.
-    Fusionnez l'ensemble des fonctionnalités par défaut[^2] ci-dessous avec
-    vos déclarations spécifiques.
+2. Configurations par défaut / extensions Markdown
+        - MkDocs (Material) active certaines extensions Markdown. Zensical peut
+            avoir une configuration différente : explicitez la liste
+            d'extensions nécessaires et fusionnez-la avec les valeurs par défaut.
 
-    [^2]: [configuration par défaut des extensions](https://zensical.org/docs/setup/extensions/#default-configuration)
+Exemple (à fusionner avec celui de votre projet) :
 
 ```yaml
 markdown_extensions:
@@ -106,33 +116,68 @@ markdown_extensions:
   - pymdownx.tilde
 ```
 
-### Navigations
+### Navigation
 
-Vous avez plusieurs choix possibles.
-Vous pouvez supprimer la section nav pour une prise en compte
-dynamique la navigation en fonction de l'arborescence docs.
-Vous pouvez expliciter la hiérarchie comme dans MkDocs. Il faudra
-supprimer les `./` en début de chemin de chaque page si vous avez des 404.
+Deux options :
 
+- Supprimer la section `nav` pour utiliser une navigation générée dynamiquement
+    depuis l'arborescence `docs/`.
+- Conserver et expliciter la hiérarchie (comme dans MkDocs). Si vos chemins
+    étaient relatifs avec un préfixe `./`, supprimez ce préfixe pour éviter des
+    404.
 
-### Personnalisation thème
+### Personnalisation du thème et assets
 
-- `theme` (logo, favicon, palette) -> options sous `[project.theme]`.
-- `extra_css`, `extra_javascript` -> copier les assets puis référencer via
-  la configuration de Zensical (ou via templates).
-
-
+- `theme` (logo, favicon, palette) → options sous `[project.theme]`.
+- `extra_css`, `extra_javascript` → copiez les assets dans `assets/` et
+    référencez-les depuis la configuration ou via des templates.
 
 Adapter templates et overrides
+- Si vous avez des overrides Jinja2 (`overrides/`), identifiez les templates
+    modifiés et portez-les dans le dossier de templates de Zensical
+    (généralement `templates/` ou `theme/overrides`).
+- Testez chaque template après `zensical build` pour corriger chemins et blocs.
 
-- Si vous avez un thème Material avec overrides (`overrides/`), identifiez les
-  templates Jinja2 modifiés et portez-les dans le dossier de templates Zensical
-  (souvent `templates/` ou `theme/overrides`).
-- Testez chaque template après build pour corriger les chemins et les blocs
-  personnalisés.
 
-## Tester et Déploiement
+## Exemple minimal de `zensical.toml` (indicatif)
 
-- Remplacez dans vos workflows (ex: GitHub Actions) l'étape `pip install mkdocs`
-  et `mkdocs build` par `pip install -r requirements.txt` (ou `pip install zensical`)
-  puis `zensical build` (ou la commande d'export correspondante).
+Le contenu ci‑dessous est un exemple minimaliste à adapter selon vos besoins
+et la version de Zensical :
+
+```toml
+# zensical.toml — exemple indicatif
+[project]
+name = "Mon site"
+description = "Documentation"
+[project.theme]
+name = "modern"
+logo = "assets/images/logo.svg"
+favicon = "assets/images/favicon.ico"
+
+[[pages]]
+path = "index.md"
+title = "Accueil"
+
+[build]
+output_dir = "site"
+
+[markdown]
+extensions = ["abbr","admonition","attr_list","def_list","footnotes","md_in_html","toc"]
+```
+
+## Tester et déploiement
+
+Remplacez dans vos workflows (ex. GitHub Actions) les étapes `pip install mkdocs`
+et `mkdocs build` par une séquence équivalente :
+
+```yaml
+- name: Build documentation
+    run: |
+        pip install zensical
+        zensical build
+```
+
+## Ressources
+
+- [Extensions prises en charge (Zensical)](https://zensical.org/docs/setup/extensions/)
+- Documentation Zensical : https://zensical.org/docs/

@@ -322,13 +322,13 @@ dans la personnalisation
 migrer d'un mkdocs v1 (vanilla) et de moderniser sa documentation.
 
 En revanche, pour les personnes qui profitaient de l'écosystème de
-plugins de mkdocs, il est encore tôt pour couvrir 100% lors de la migration.
+plugins de mkdocs, il est encore tôt pour couvrir 100% lors de la migration. Un gros travail d'analyse a été fait par l'équipe pour définir objectivement l'effort à porter sur chacun des plugins MkDocs. Sauf plugin ésotérique, c'est une question de temps.
 
 Pour certains de mes usages en entreprise, il me manque :
 
 - [ ] la partie révision git avec les dates de dernière modification et d'auteur
 - [ ] l'option commandline `--site-dir` est manquante pour faire une preview en CI. Il faudra jongler dans l'étape script du job.
-- [ ] les raccourcis en footer des social cards n'est pas totalement intégré dans le toml
+- [ ] le format zensikal.toml pas totalement sec. Ex: les raccourcis en footer des social cards pas vraiment fonctionnelle. (mais sur mkdocs.yml c'est ok une liste)
 
 Il faudrait également qu'à terme, les fonctionnalités suivantes se debloquent :
 
@@ -336,9 +336,11 @@ Il faudrait également qu'à terme, les fonctionnalités suivantes se debloquent
 - [ ] le mode blog, liste des derniers articles par date de publication
 - [ ] l'affichage des pages par tags
 - [ ] mkdocstrings est encore partiel
-- [ ] prise en charge CommonMark
+- [ ] prise en charge CommonMark (En 2026, c'est plus soutenable de continuer sur du spécifique markdown!)
 
 Globalement, le résultat est plutôt bon. Pour un projet si jeune, je ne
 vais pas chercher à comparer fonction par fonction avec d'autres SSG.
 Je suis assez satisfait pour continuer à rédiger sur Zensical et porter
 les migrations (légère) de mkdocs.
+
+En revanche, pour mes travaux les plus ambitieux je vais devoir patienter ou commencer à regarder ailleurs. Mais avec une nouvelle version toute les semaines... l'option 1 est ok.

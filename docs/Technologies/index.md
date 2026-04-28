@@ -3,6 +3,7 @@
 title: Technologies
 hide:
     - toc
+    - feedback
 ---
 
 Cette section présente l'étude de composant technique et de technologie. Ces guides

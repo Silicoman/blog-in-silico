@@ -3,6 +3,7 @@ icon: lucide/radio-tower
 title: In Silico
 hide:
     - toc
+    - feedback
 ---
 
 <!-- Maze background: full-screen canvas (click to regenerate) -->

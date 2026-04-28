@@ -16,6 +16,45 @@ Copyright &copy; 2026 Silicoman
 
 language = "fr"
 
+# ----------------------------------------------------------------------------
+# Section Analytics
+# ----------------------------------------------------------------------------
+
+[project.extra.analytics]
+provider = "google"
+property = "G-NNRP6H2GWQ"
+
+[project.extra.analytics.feedback]
+title = "Est-ce que le contenu de la page vous a été utile?"
+
+[[project.extra.analytics.feedback.ratings]]
+icon = "material/emoticon-happy-outline"
+name = "Cette page m'a été utile!"
+data = 1
+note = "Merci pour votre retour!"
+
+[[project.extra.analytics.feedback.ratings]]
+icon = "material/emoticon-sad-outline"
+name = "Cette page pourrait être améliorée"
+data = 0
+note = "Merci pour votre retour!"
+
+[project.extra.consent]
+title = "Cookie consent"
+description = """
+    We use cookies to recognize your repeated visits and preferences, as well
+    as to measure the effectiveness of our documentation and whether users
+    find what they're searching for. With your consent, you're helping us to
+    make our documentation better.
+"""
+
+#[project.extra.consent.cookies]
+#analytics.name = "Google Analytics"
+#checked = true
+
+# ----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+
 # Zensical provides a number of feature toggles that change the behavior
 # of the documentation site.
 [project.theme]

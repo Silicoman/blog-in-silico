@@ -28,9 +28,9 @@ afin de lever toutes les contraintes qu'ils subissaient jusqu'à présent.
 Il est né du besoin d'offrir une expérience de documentation moderne et
 cohérente — comparable à celle fournie par Material for MkDocs — sans
 rester lié à l'écosystème MkDocs. Cependant, afin de financer leur travail,
-En revanche, ils proposent du support commercial avec leur offre
-[`Zensical Spark`](https://zensical.org/spark/tiers) pour
-faciliter la migration.
+ils proposent du support commercial avec leur offre
+[`Zensical Spark`](https://zensical.org/spark/tiers). En y adhérant, l'équipe
+vous accompagnera à la migration, prioriser leur *backlog*.
 
 !!! quote
     Our new approach distills a decade of experience maintaining Material for MkDocs, allowing us to professionalize and scale our efforts from a small team to a fully organized operation, while keeping the software free and open to everyone.
@@ -235,14 +235,69 @@ description: my description page
 On ne va pas détailler comment rédiger un markdown mais à savoir que
 vous avez une prise en charge des formules mathématiques, des schémas
 mermaid, des admonitions, code blocks, tableau, tableau à onglet, footnotes,
-grilles, émojis, de preview de snippet, de l'html dans le markdown,
+grilles, émojis, de preview de snippet, de l'HTML dans le markdown,
 de glossaire. Une grande partie sont visibles sur la page de démo générée.
 Certaines fonctions de [python markdown extensions](https://facelessuser.github.io/pymdown-extensions/) ne sont pas officielement pris en charge mais peuvent etre
 fonctionnelles.
 Vous pouvez documenter l'api de votre librairie avec [mkdocstrings](https://zensical.org/docs/setup/extensions/mkdocstrings/).
 
 Ce qui intéressant à savoir c'est que vous pouvez implémenter un template
-jinja et surcharger la page html.
+Jinja et surcharger la page HTML.
+
+#### Intégrations services externes (le cas de Google Analytics)
+
+Pour enrichir votre site, il est possible d'activer des fonctionnalités
+avancées tel que l'analytics. Pour mieux comprendre ce que cherche vos
+utilisateurs dans votre site web, un des leviers est de récupérer des
+métriques quantitatives.
+
+Zensical vous propose d'activer Google Analytics ou d'intégrer un middleware
+tiers en quelques lignes de configuration. Pour être compatible avec la RGPD,
+vous pouvez configurer le popup cookies.
+Le *free plan* de Google Analytics vous permettra de démarrer l'observabilité
+de vos pages web. Il suffit d'ajouter le Google Tag du service à votre
+configuration. Pour information, le tag n'est pas une information sensible.
+Elle sera affiché sur la page web des utilisateurs.
+
+```toml
+[project.extra.analytics]
+provider = "google"
+property = "G-XXXXXX"
+
+[project.extra.consent]
+title = "Cookie consent"
+description = """
+    We use cookies to recognize your repeated visits and preferences, as well
+    as to measure the effectiveness of our documentation and whether users
+    find what they're searching for. With your consent, you're helping us to
+    make our documentation better.
+"""
+
+[project.extra.consent.cookies]
+analytics.name = "Google Analytics"
+checked = true
+```
+
+Vous pouvez enrichir vos métriques avec des données complémentaires en ajoutant
+des avis. La documentation vous explique comment créer un dashboard dédié[^11].
+
+##### Désactiver des fonctionnalités au cas par cas
+
+C'est l'ocassion d'introduire que certaines pages n'auront pas besoin d'avoir
+d'avis comme la page contact, ou page d'accueil. Vous pourrez masquer certaines
+fonctionnalités Zensical en ajoutant dans la section `Front matter` le mot
+clef `hide`.
+
+```markdown {linenums="1 1 2"}
+---
+title: my first page
+description: my description page
+hide:
+  - feedback
+---
+```
+
+[^11]: [Configurer l'analytics sur Zensical](https://zensical.org/docs/setup/analytics/#was-this-page-helpful)
 
 ### Déployer sur pages
 

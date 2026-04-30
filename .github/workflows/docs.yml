@@ -21,7 +21,7 @@ jobs:
           python-version: 3.13.x
       - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b
       - run: uv sync --no-dev
-      - run: uv run zensical build --clean
+      - run: uv run zensical build --clean --strict
       - uses: actions/upload-pages-artifact@v5
         with:
           path: site

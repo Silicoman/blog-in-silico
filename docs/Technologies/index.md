@@ -17,4 +17,4 @@ vous aideront à pratiquer.
 
 ## Sommaire
 
-- [Zensical](zensical.md) — un site static generator.
+- [Zensical](Zensical/index.md) — un site static generator.

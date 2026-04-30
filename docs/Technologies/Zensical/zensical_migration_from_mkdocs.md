@@ -5,15 +5,38 @@ description: "Tutoriel pour migrer une documentation MkDocs
 tags:
     - docs
     - migration
+    - tutoriel
 ---
 
 Ce guide décrit les étapes pour migrer une documentation basée sur **MkDocs**
 (ou **Material for MkDocs**) — `mkdocs.yml` + dossier `docs/` — vers **Zensical**.
 
+Zensical a dans son backlog la mise en oeuvre d'un outil de migration. Cependant,
+il y a un peu de travail. Si vous désirez dès à présent basculer sur Zensical,
+la suite devrait vous donner les grandes lignes.
+
 !!! warning "Compatibilité de l'écosystème"
-        Si vous utilisez intensivement des plugins MkDocs, il est possible que ce
-        guide et l'état actuel de Zensical ne couvrent pas toutes les
-        fonctionnalités. Procédez par étapes.
+    Si vous utilisez intensivement des plugins MkDocs, il est possible que ce
+    guide et l'état actuel de Zensical ne couvrent pas toutes les
+    fonctionnalités. Procédez par étapes. La compatibilité complète viendra
+    avec le temps et est explicitement annoncé par Zensical[^0].
+    En revanche, je vous conseille de regarder les forks
+    [ProperDocs]((https://properdocs.org/))
+    (par [*oprypin*](https://github.com/oprypin) un ancien mainteneur de MkDocs)
+    et [MaterialX](https://jaywhj.github.io/mkdocs-materialx/)
+    (par un outsider [*jaywhj*](https://github.com/jaywhj)). Leur pérennité
+    n'est pas garanti car la communauté.
+
+[^0]: [Compatibilité MkDocs vers Zensical](https://zensical.org/compatibility/)
+
+!!! tips "De nombreux projets ont déjà migrés"
+    Suite au message d'alerte de depréciation de Material for MkDocs dans les
+    logs de build, de nombreux projets ont migrés depuis mars sur Zensical.
+    La migration est relativement simple pour certains comme sur netbox[^10].
+    Ce guide est construit à partir de mon expérience et des reviews des
+    projets.
+
+[^10]: [Merge Request de migration de netbox vers zensical](https://github.com/netbox-community/netbox/pull/21742/changes)
 
 ## Migrer les dépendances
 
@@ -33,19 +56,19 @@ pip install zensical
 ```
 
 !!! info "Dépendances implicites"
-        La distribution `zensical` embarque ou requiert certaines extensions
-        Markdown courantes. Elle gère ainsi la compatibilité des versions des
-        extensions. Consultez la documentation officielle[^1] pour la
-        liste des extensions prises en charge et leur configuration par défaut.
+    La distribution `zensical` embarque ou requiert certaines extensions
+    Markdown courantes. Elle gère ainsi la compatibilité des versions des
+    extensions. Consultez la documentation officielle[^1] pour la
+    liste des extensions prises en charge et leur configuration par défaut.
 
 [^1]: [Extensions prises en charge (Zensical)](https://zensical.org/docs/setup/extensions/)
 
 ## Portage des configurations
 
 !!! tip "zensical.toml et mkdocs.yml"
-        Zensical sait interpréter de base un `mkdocs.yml` — c'est un bon point de
-        départ pour vérifier le rendu avant de convertir définitivement la
-        configuration en `zensical.toml`.
+    Zensical sait interpréter de base un `mkdocs.yml` — c'est un bon point de
+    départ pour vérifier le rendu avant de convertir définitivement la
+    configuration en `zensical.toml`.
 
 Pendant la phase de migration, effectuez les modifications dans `mkdocs.yml`
 et vérifiez le rendu localement :
@@ -60,18 +83,14 @@ uv run zensical serve
 # puis ouvrir http://localhost:8000
 ```
 
-Une fois le rendu satisfaisant, convertissez progressivement la configuration
-vers `zensical.toml` (format TOML), en regroupant les options sous
-`[project]`, `[markdown]`, etc.
-
 ### Gestion des features et plugins
 
 1. Plugins (section à supprimer)
-        - La section `plugins` de MkDocs peut contenir des fonctions non prises
+    - La section `plugins` de MkDocs peut contenir des fonctions non prises
             en charge telles quelles. A valider dans la roadmap Zensical.
 
 2. Configurations par défaut / extensions Markdown
-        - MkDocs (Material) active quelques extensions. Zensical peut
+    - MkDocs (Material) active quelques extensions. Zensical peut
             avoir une configuration différente et active massivement les
             fonctionnalités: explicitez la liste
             d'extensions nécessaires et fusionnez-la avec les valeurs par défaut.
@@ -117,7 +136,7 @@ markdown_extensions:
   - pymdownx.tilde
 ```
 
-### Navigation
+### Gestion de la navigation
 
 Deux options :
 
@@ -125,45 +144,19 @@ Deux options :
     depuis l'arborescence `docs/`.
 - Conserver et expliciter la hiérarchie (comme dans MkDocs). Si vos chemins
     étaient relatifs avec un préfixe `./`, supprimez ce préfixe pour éviter des
-    404.
+    erreurs 404.
 
 ### Personnalisation du thème et assets
 
-- `theme` (logo, favicon, palette) → options sous `[project.theme]`.
-- `extra_css`, `extra_javascript` → copiez les assets dans `assets/` et
-    référencez-les depuis la configuration ou via des templates.
+Vous désirez peut être utiliser le nouveau thème natif Zensical.
 
-Adapter templates et overrides
-- Si vous avez des overrides Jinja2 (`overrides/`), identifiez les templates
-    modifiés et portez-les dans le dossier de templates de Zensical
-    (généralement `templates/` ou `theme/overrides`).
-
-
-## Exemple minimal de `zensical.toml` (indicatif)
-
-Le contenu ci‑dessous est un exemple minimaliste à adapter selon vos besoins
-et la version de Zensical :
-
-```toml
-# zensical.toml — exemple indicatif
-[project]
-name = "Mon site"
-description = "Documentation"
-[project.theme]
-name = "modern"
-logo = "assets/images/logo.svg"
-favicon = "assets/images/favicon.ico"
-
-[[pages]]
-path = "index.md"
-title = "Accueil"
-
-[build]
-output_dir = "site"
-
-[markdown]
-extensions = ["abbr","admonition","attr_list","def_list","footnotes","md_in_html","toc"]
 ```
+theme:
+  variant: modern
+```
+
+Avec le nouveau thème, si vous utilisez des css personnalisés, il faudra faire
+une relecture de la cohérence avec le nouveau thème.
 
 ## Tester et déploiement
 
@@ -174,10 +167,14 @@ et `mkdocs build` par une séquence équivalente :
 - name: Build documentation
     run: |
         uv sync
-        uv run zensical build
+        uv run zensical build --config-file mkdocs.yml --strict
 ```
 
 ## Conclusion
 
 En fonction de la complexité de la personnalisation, il faudra probablement
 investir un peu plus au cas par cas que ce guide.
+
+Une fois le rendu satisfaisant, vous pourrez convertir la configuration `mkdocs.yml`
+vers `zensical.toml` (format TOML), en regroupant les options sous
+`[project]`, `[markdown]`, etc. Vous couperez symboliquement les ponts avec mkdocs.

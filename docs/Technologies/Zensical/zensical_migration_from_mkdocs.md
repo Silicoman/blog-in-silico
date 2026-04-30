@@ -83,6 +83,10 @@ uv run zensical serve
 # puis ouvrir http://localhost:8000
 ```
 
+Vous aurez problablement quelques adaptations détaillées ci-dessous si vous
+avez des erreurs.
+
+
 ### Gestion des features et plugins
 
 1. Plugins (section à supprimer)
@@ -176,5 +180,5 @@ En fonction de la complexité de la personnalisation, il faudra probablement
 investir un peu plus au cas par cas que ce guide.
 
 Une fois le rendu satisfaisant, vous pourrez convertir la configuration `mkdocs.yml`
-vers `zensical.toml` (format TOML), en regroupant les options sous
-`[project]`, `[markdown]`, etc. Vous couperez symboliquement les ponts avec mkdocs.
+vers `zensical.toml` avec le nouveau format.
+Ainsi, vous couperez symboliquement les ponts avec mkdocs.

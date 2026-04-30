@@ -1,5 +1,5 @@
 ---
-title: Zensical, Static Site Generator
+title: Zensical, un Static Site Generator à base de Markdown
 description: "Qu'est-ce que Zensical ? Plongeons dans l'histoire de Zensical.
 Evaluons ces points forts et points faibles dans la mise en oeuvre de ce static site generator pour la documentation."
 
@@ -134,7 +134,7 @@ les pages, elles seront rechargés dans le navigateur
     exotiques dépendantes du hardware. `uv add --group=docs zensical`
 
 On peut déjà tirer une première conclusion, que la mise
-en place est d'une simplicité déconcertante. Je peux modifier l'index.md et avoir un premiere boucle feedback.
+en place est d'une simplicité déconcertante. Je peux modifier l'index.md et avoir une premiere boucle feedback.
 
 ### Fonctionnalités disponibles
 
@@ -146,7 +146,7 @@ Certaines configurations vont suivre la pratique de
 `convention over configuration`. Un ensemble de fonctionnalité
 est ainsi par défaut activé. Cela permet d'avoir
 certains effets magique comme la détection automatique
-des nouvelles pages ajoutées appréciable pour démarrer.
+des nouvelles pages ajoutées, appréciable pour démarrer.
 
 !!! warning "navigation des pages"
     Cependant, tôt ou tard, il faudra déclarer l'option
@@ -234,7 +234,6 @@ Vous pouvez documenter l'api de votre librairie avec [mkdocstrings](https://zens
 
 Ce qui intéressant à savoir c'est que vous pouvez implémenter un template
 jinja et surcharger la page html.
-
 
 ### Déployer sur pages
 

@@ -8,26 +8,29 @@ tags:
     - SSG
 ---
 
-Zensical est un site static generator SSG. Il vous permet de générer un site
+<img src="https://zensical.org/assets/zensical.svg" alt="Zensical Logo" style="float:left; margin:0 1rem 1rem 0; border-radius:50%; object-fit:cover; width:clamp(64px,12vw,150px); height:auto; aspect-ratio:1/1;" />
+Zensical[^0] est un site static generator SSG. Il vous permet de générer un site
 statique à partir de fichier markdown. Il devrait à terme prendre en charge
 le standard CommonMark. L'équipe derrière le projet possède une dizaine
 d'années d'expérience sur les problématiques de SSG. Combiné avec un
 développement en Rust + Python, l'équipe a toutes les chances de mettre en oeuvre
 un moteur robuste et efficace.
 
+[^0]: Le logo et la marque associée sont une propriété de Zensical. Leur usage est appliqué à partir de la prescription [du guide d'utilisation](https://zensical.org/about/press-kit/#usage-guidelines).
+
 ## A l'origine de Zensical
 
 En novembre 2025[^1] l'auteur [Martin Donath](https://github.com/squidfunk)
-de `material for mkdocs` annonce la sortie de Zensical.
-Suite aux déboires de la maintenance de `mkdocs`[^2]. Les développeurs de
-material y ont vu une opportunité de s'affranchir du moteur `mkdocs`
+de `Material for MkDocs` annonce la sortie de Zensical.
+Suite aux déboires de la maintenance de `MkDocs`[^2]. Les développeurs de
+material y ont vu une opportunité de s'affranchir du moteur `MkDocs`
 afin de lever toutes les contraintes qu'ils subissaient jusqu'à présent.
 Il est né du besoin d'offrir une expérience de documentation moderne et
 cohérente — comparable à celle fournie par Material for MkDocs — sans
 rester lié à l'écosystème MkDocs. Cependant, afin de financer leur travail,
-En revanche, ils proposent du support commercial avec leur offre
-[`Zensical Spark`](https://zensical.org/spark/tiers) pour
-faciliter la migration.
+ils proposent du support commercial avec leur offre
+[`Zensical Spark`](https://zensical.org/spark/tiers). En y adhérant, l'équipe
+vous accompagnera à la migration, prioriser leur *backlog*.
 
 !!! quote
     Our new approach distills a decade of experience maintaining Material for MkDocs, allowing us to professionalize and scale our efforts from a small team to a fully organized operation, while keeping the software free and open to everyone.
@@ -37,19 +40,19 @@ faciliter la migration.
 
 ## Viabilité
 
-### Commaunauté
+### Communauté
 
-Le projet `material for mkdocs` possède une grosse communauté. Le projet `Zensical`
-s'appuie sur cette base communautaire en facilitant la migration de mkdocs vers ce
+Le projet `Material for MkDocs` possède une grosse communauté. Le projet `Zensical`
+s'appuie sur cette base communautaire en facilitant la migration de MkDocs vers ce
 nouveau site générateur. Ce choix stratégique permet d'éviter une fuite de la
 communauté vers d'autres sites générateurs. Globalement des différentes discussions
 des projets devant migrer et de l'historique des *stars* github, la communauté
 à l'air de suivre.
 
-- __Historique des Stars de `material for mkdocs` et `Zensical` avec une échelle log__
+- __Historique des Stars de `Material for MkDocs` et `Zensical` avec une échelle log__
 
     ---
-    [![Star History Chart par log scale](https://api.star-history.com/chart?repos=zensical/zensical%2Csquidfunk/mkdocs-material&type=date&logscale&legend=top-left)](https://www.star-history.com/?repos=zensical%2Fzensical%2Csquidfunk%2Fmkdocs-material&type=date&logscale=&legend=top-left)
+  [![Star History Chart à l'échelle log](https://api.star-history.com/chart?repos=zensical/zensical%2Csquidfunk/mkdocs-material%2Cmkdocs/mkdocs&type=date&logscale&legend=top-left)](https://www.star-history.com/?repos=zensical%2Fzensical%2Csquidfunk%2Fmkdocs-material%2Cmkdocs%2Fmkdocs&type=date&logscale=&legend=top-left)
 
 ### Licence OpenSource
 
@@ -61,7 +64,7 @@ Martin Donath a maintenu pendant 10 ans en licence MIT son projet material
 à travers des dons (200K/an[^3] à la fin).
 Zensical semble suivre le même état d'esprit. De la roadmap, Zensical cherche
 a mettre en oeuvre toutes les fonctionnalités présentes dans l'écosystème
-`mkdocs` et `material for mkdocs`. De mon avis, la stratégie est d'assécher
+`MkDocs` et `Material for MkDocs`. De mon avis, la stratégie est d'assécher
 les forks potentiels et l'éclatement de l'écosystème. L'équipe a recruté
 le développeur de mkdocstring[^4] pour porter le plugin critique.
 A partir de cette base solide, il est
@@ -172,10 +175,12 @@ font.text = "Inter"
 font.code = "JetBrains Mono"
 ```
 
-Vous pouvez ajouter le dark mode. Pour aller plus loin, il est
+Vous pouvez ajouter le *dark mode*. Pour aller plus loin, il est
 toujours possible de [déclarer votre propre css](https://zensical.org/docs/setup/colors/#custom-color-schemes).
 
 A terme, vous pourrez regarder la partie surcharge des pages html.
+Il est possible de creer un theme bundle exportable pour uniformiser toutes
+vos docs au niveau de votre organisation.
 
 #### Contenu d'une page
 
@@ -226,19 +231,75 @@ description: my description page
 On ne va pas détailler comment rédiger un markdown mais à savoir que
 vous avez une prise en charge des formules mathématiques, des schémas
 mermaid, des admonitions, code blocks, tableau, tableau à onglet, footnotes,
-grilles, émojis, de preview de snippet, de l'html dans le markdown,
+grilles, émojis, de preview de snippet, de l'HTML dans le markdown,
 de glossaire. Une grande partie sont visibles sur la page de démo générée.
 Certaines fonctions de [python markdown extensions](https://facelessuser.github.io/pymdown-extensions/) ne sont pas officielement pris en charge mais peuvent etre
 fonctionnelles.
 Vous pouvez documenter l'api de votre librairie avec [mkdocstrings](https://zensical.org/docs/setup/extensions/mkdocstrings/).
 
 Ce qui intéressant à savoir c'est que vous pouvez implémenter un template
-jinja et surcharger la page html.
+Jinja et surcharger la page HTML.
+
+#### Intégrations services externes (le cas de Google Analytics)
+
+Pour enrichir votre site, il est possible d'activer des fonctionnalités
+avancées tel que l'analytics. Pour mieux comprendre ce que cherche vos
+utilisateurs dans votre site web, un des leviers est de récupérer des
+métriques quantitatives.
+
+Zensical vous propose d'activer Google Analytics ou d'intégrer un middleware
+tiers en quelques lignes de configuration. Pour être compatible avec la RGPD,
+vous pouvez configurer le popup cookies.
+Le *free plan* de Google Analytics vous permettra de démarrer l'observabilité
+de vos pages web. Il suffit d'ajouter le Google Tag du service à votre
+configuration. Pour information, le tag n'est pas une information sensible.
+Elle sera affiché sur la page web des utilisateurs.
+
+```toml
+[project.extra.analytics]
+provider = "google"
+property = "G-XXXXXX"
+
+[project.extra.consent]
+title = "Cookie consent"
+description = """
+    We use cookies to recognize your repeated visits and preferences, as well
+    as to measure the effectiveness of our documentation and whether users
+    find what they're searching for. With your consent, you're helping us to
+    make our documentation better.
+"""
+
+[project.extra.consent.cookies]
+analytics.name = "Google Analytics"
+checked = true
+```
+
+Vous pouvez enrichir vos métriques avec des données complémentaires en ajoutant
+des avis. La documentation vous explique comment créer un dashboard dédié[^11].
+
+##### Désactiver des fonctionnalités au cas par cas
+
+C'est l'ocassion d'introduire que certaines pages n'auront pas besoin d'avoir
+d'avis comme la page contact, ou page d'accueil. Vous pourrez masquer certaines
+fonctionnalités Zensical en ajoutant dans la section `Front matter` le mot
+clef `hide`.
+
+```markdown {linenums="1 1 2"}
+---
+title: my first page
+description: my description page
+hide:
+  - feedback
+---
+```
+
+[^11]: [Configurer l'analytics sur Zensical](https://zensical.org/docs/setup/analytics/#was-this-page-helpful)
+
 
 ### Déployer sur pages
 
 Pour déployer rapidement, vous pouvez utiliser les services
-à disposition sur github du free plan.
+à disposition sur github du *free plan*.
 Votre dépôt devra être public et vous serez limité à un site[^8].
 
 [^8]: [Découvrez les limites et limitations de GitHub Pages](https://docs.github.com/fr/pages/getting-started-with-github-pages/github-pages-limits)
@@ -293,14 +354,14 @@ Votre dépôt devra être public et vous serez limité à un site[^8].
     ```
 
 !!! tip hébergement
-    Pour utiliser d'autres services d'hébergement en free plan, vous pouvez
+    Pour utiliser d'autres services d'hébergement en *free plan*, vous pouvez
     consulter [readthedocs](https://docs.readthedocs.com/platform/stable/index.html)
     qui est une référence dans la communauté OpenSource.
 
 ## Evaluations
 
 !!! info "fonctionnalités testées"
-    A date, je n'ai pas testé les options comme l'analytics, versioning et
+    A date, je n'ai pas testé les options comme versioning et
     comment system. Cette revue pourra à terme évoluer.
 
 ### Points forts
@@ -318,26 +379,30 @@ dans la personnalisation
 ### Limitations
 
 5 mois après l'annonce, Zensical possède suffisamment de fonctionnalité pour
-migrer d'un mkdocs v1 (vanilla) et de moderniser sa documentation.
+migrer d'un MkDocs v1 (vanilla) et de moderniser sa documentation.
 
 En revanche, pour les personnes qui profitaient de l'écosystème de
-plugins de mkdocs, il est encore tôt pour couvrir 100% lors de la migration.
+plugins de MkDocs, il est encore tôt pour couvrir 100% lors de la migration. Un gros travail d'analyse a été fait par l'équipe pour définir objectivement l'effort à porter sur chacun des plugins MkDocs. Sauf plugin ésotérique, c'est une question de temps.
 
 Pour certains de mes usages en entreprise, il me manque :
 
 - [ ] la partie révision git avec les dates de dernière modification et d'auteur
 - [ ] l'option commandline `--site-dir` est manquante pour faire une preview en CI. Il faudra jongler dans l'étape script du job.
-- [ ] les raccourcis en footer des social cards n'est pas totalement intégré dans le toml
+- [ ] le format zensikal.toml pas totalement sec. Ex: les raccourcis en footer des social cards pas vraiment fonctionnelle. (mais sur `mkdocs.yml` c'est ok une liste)
 
 Il faudrait également qu'à terme, les fonctionnalités suivantes se debloquent :
 
 - [ ] le moteur d'extension par plugin (pour que la communauté s'adapte/innove)
 - [ ] le mode blog, liste des derniers articles par date de publication
 - [ ] l'affichage des pages par tags
-- [ ] mkdocstrings est encore partiel
-- [ ] prise en charge CommonMark
+- [ ] `mkdocstrings` est encore partiel (mais je n'ai pas eu l'occasion de m'en servir)
+- [ ] prise en charge de la spécification CommonMark (En 2026, c'est plus
+soutenable de continuer sur du spécifique markdown!)
 
 Globalement, le résultat est plutôt bon. Pour un projet si jeune, je ne
 vais pas chercher à comparer fonction par fonction avec d'autres SSG.
 Je suis assez satisfait pour continuer à rédiger sur Zensical et porter
-les migrations (légère) de mkdocs.
+les migrations (légère) de MkDocs. Au fur et à mesure des nouvelles
+releases, vous observerez probablement des enrichissements de ce site.
+
+En revanche, pour mes travaux les plus ambitieux je vais devoir patienter ou commencer à regarder ailleurs. Mais avec une nouvelle version toute les semaines... l'option 1 est ok.

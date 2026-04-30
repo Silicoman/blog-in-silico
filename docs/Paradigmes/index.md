@@ -2,6 +2,8 @@
 icon: lucide/dna
 title: Paradigmes
 description: "Pourquoi s'intéresser aux paradigmes informatiques"
+hide:
+    - feedback
 ---
 
 Les paradigmes sont des cadres de pensée qui structurent la manière dont

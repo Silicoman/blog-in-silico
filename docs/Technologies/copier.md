@@ -8,3 +8,13 @@ et vous donne les conditions pour les mettre à jour en masse."
 
 Dans l'univers du Scaffolding, *cookiecutter* règne en maître. Il est très probable que vous trouviez des templates cookiecutters si vous cherchez un exemple de projet. Cependant, le format possède quelques limites. C'est là où copier rentre dans la danse.
 
+## Créer votre premier scaffold copier
+
+
+### la génération
+
+
+### cycle de vie par copier
+
+## conclusion
+

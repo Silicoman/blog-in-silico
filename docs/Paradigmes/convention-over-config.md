@@ -124,7 +124,7 @@ nouvelle méthode en ajoutant des mécanismes d'avertissement pour l'utilisateur
 rythme de vos releases qui définira le bon moment pour nettoyer le code ou
 vos serveurs.
 
-## Conclusion
+ Lorsque les contraintes changent, il faut savoir pivoter et revoir les conventions adoptées — retirer une mauvaise convention tôt est préférable à la maintenir et complexifier le système.
 
  Appliquer ce paradigme demande de la vigilance. Il est facile d'adopter la
  première solution trouvée sur Stack Overflow ou proposée par une IA,

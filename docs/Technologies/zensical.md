@@ -222,6 +222,28 @@ description: my description page
     * Your meta description should have the most relevant content of the page.
     A searcher should know whether they’ve found the right page from the description.
 
+    * The meta description should be between 150-300 characters and
+    it may be truncated down to around 150 characters in some situations.
+
+    * Meta descriptions are used for display but not for ranking.
+
+[^10]: [How to do search engine optimization (SEO) for documentation projects](https://docs.readthedocs.com/platform/stable/guides/technical-docs-seo-guide.html)
+
+On ne va pas détailler comment rédiger un markdown mais à savoir que
+vous avez une prise en charge des formules mathématiques, des schémas
+mermaid, des admonitions, code blocks, tableau, tableau à onglet, footnotes,
+grilles, émojis, de preview de snippet, de l'html dans le markdown,
+de glossaire. Une grande partie sont visibles sur la page de démo générée.
+Certaines fonctions de [python markdown extensions](https://facelessuser.github.io/pymdown-extensions/) ne sont pas officielement pris en charge mais peuvent etre
+fonctionnelles.
+Vous pouvez documenter l'api de votre librairie avec [mkdocstrings](https://zensical.org/docs/setup/extensions/mkdocstrings/).
+
+Ce qui intéressant à savoir c'est que vous pouvez implémenter un template
+jinja et surcharger la page html.
+
+    * Your meta description should have the most relevant content of the page.
+    A searcher should know whether they’ve found the right page from the description.
+
 ### Déployer sur pages
 
 Pour déployer rapidement, vous pouvez utiliser les services

@@ -1,5 +1,5 @@
 ---
-title: Zensical, Static Site Generator
+title: Zensical, un Static Site Generator à base de Markdown
 description: "Qu'est-ce que Zensical ? Plongeons dans l'histoire de Zensical.
 Evaluons ces points forts et points faibles dans la mise en oeuvre de ce static site generator pour la documentation."
 
@@ -150,7 +150,7 @@ Certaines configurations vont suivre la pratique de
 `convention over configuration`. Un ensemble de fonctionnalité
 est ainsi par défaut activé. Cela permet d'avoir
 certains effets magique comme la détection automatique
-des nouvelles pages ajoutées appréciable pour démarrer.
+des nouvelles pages ajoutées, appréciable pour démarrer.
 
 !!! warning "navigation des pages"
     Cependant, tôt ou tard, il faudra déclarer l'option
@@ -227,6 +227,9 @@ description: my description page
 
     * Meta descriptions are used for display but not for ranking.
 
+    * Your meta description should have the most relevant content of the page.
+    A searcher should know whether they’ve found the right page from the description.
+
 [^10]: [How to do search engine optimization (SEO) for documentation projects](https://docs.readthedocs.com/platform/stable/guides/technical-docs-seo-guide.html)
 
 On ne va pas détailler comment rédiger un markdown mais à savoir que
@@ -240,9 +243,6 @@ Vous pouvez documenter l'api de votre librairie avec [mkdocstrings](https://zens
 
 Ce qui intéressant à savoir c'est que vous pouvez implémenter un template
 jinja et surcharger la page html.
-
-    * Your meta description should have the most relevant content of the page.
-    A searcher should know whether they’ve found the right page from the description.
 
 ### Déployer sur pages
 

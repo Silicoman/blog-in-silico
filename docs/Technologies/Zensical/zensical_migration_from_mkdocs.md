@@ -62,7 +62,7 @@ uv run zensical serve
 
 Une fois le rendu satisfaisant, convertissez progressivement la configuration
 vers `zensical.toml` (format TOML), en regroupant les options sous
-`[project]`, `[markdown]`, `[build]`, etc.
+`[project]`, `[markdown]`, etc.
 
 ### Gestion des features et plugins
 
@@ -71,8 +71,9 @@ vers `zensical.toml` (format TOML), en regroupant les options sous
             en charge telles quelles. A valider dans la roadmap Zensical.
 
 2. Configurations par défaut / extensions Markdown
-        - MkDocs (Material) active certaines extensions Markdown. Zensical peut
-            avoir une configuration différente : explicitez la liste
+        - MkDocs (Material) active quelques extensions. Zensical peut
+            avoir une configuration différente et active massivement les
+            fonctionnalités: explicitez la liste
             d'extensions nécessaires et fusionnez-la avec les valeurs par défaut.
 
 Exemple (à fusionner avec celui de votre projet) :
@@ -136,7 +137,6 @@ Adapter templates et overrides
 - Si vous avez des overrides Jinja2 (`overrides/`), identifiez les templates
     modifiés et portez-les dans le dossier de templates de Zensical
     (généralement `templates/` ou `theme/overrides`).
-- Testez chaque template après `zensical build` pour corriger chemins et blocs.
 
 
 ## Exemple minimal de `zensical.toml` (indicatif)
@@ -173,11 +173,11 @@ et `mkdocs build` par une séquence équivalente :
 ```yaml
 - name: Build documentation
     run: |
-        pip install zensical
-        zensical build
+        uv sync
+        uv run zensical build
 ```
 
-## Ressources
+## Conclusion
 
-- [Extensions prises en charge (Zensical)](https://zensical.org/docs/setup/extensions/)
-- Documentation Zensical : https://zensical.org/docs/
+En fonction de la complexité de la personnalisation, il faudra probablement
+investir un peu plus au cas par cas que ce guide.

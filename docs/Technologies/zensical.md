@@ -28,9 +28,10 @@ afin de lever toutes les contraintes qu'ils subissaient jusqu'à présent.
 Il est né du besoin d'offrir une expérience de documentation moderne et
 cohérente — comparable à celle fournie par Material for MkDocs — sans
 rester lié à l'écosystème MkDocs. Cependant, afin de financer leur travail,
+En revanche, pour les personnes qui profitaient de l'écosystème de
 ils proposent du support commercial avec leur offre
-[`Zensical Spark`](https://zensical.org/spark/tiers). En y adhérant, l'équipe
-vous accompagnera à la migration, prioriser leur *backlog*.
+[`Zensical Spark`](https://zensical.org/spark/tiers) pour
+faciliter la migration.
 
 !!! quote
     Our new approach distills a decade of experience maintaining Material for MkDocs, allowing us to professionalize and scale our efforts from a small team to a fully organized operation, while keeping the software free and open to everyone.

@@ -126,6 +126,8 @@ vos serveurs.
 
  Lorsque les contraintes changent, il faut savoir pivoter et revoir les conventions adoptées — retirer une mauvaise convention tôt est préférable à la maintenir et complexifier le système.
 
+## Conclusion
+
  Appliquer ce paradigme demande de la vigilance. Il est facile d'adopter la
  première solution trouvée sur Stack Overflow ou proposée par une IA,
  mais il est plus difficile de mettre en place une vraie bonne pratique.

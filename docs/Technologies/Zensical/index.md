@@ -137,7 +137,8 @@ les pages, elles seront rechargés dans le navigateur
     exotiques dépendantes du hardware. `uv add --group=docs zensical`
 
 On peut déjà tirer une première conclusion, que la mise
-en place est d'une simplicité déconcertante. Je peux modifier l'index.md et avoir une premiere boucle feedback.
+en place est d'une simplicité déconcertante. Je peux modifier l'index.md
+et avoir un premiere boucle feedback.
 
 ### Fonctionnalités disponibles
 
@@ -226,6 +227,9 @@ description: my description page
 
     * Meta descriptions are used for display but not for ranking.
 
+    * Your meta description should have the most relevant content of the page.
+    A searcher should know whether they’ve found the right page from the description.
+
 [^10]: [How to do search engine optimization (SEO) for documentation projects](https://docs.readthedocs.com/platform/stable/guides/technical-docs-seo-guide.html)
 
 On ne va pas détailler comment rédiger un markdown mais à savoir que
@@ -294,7 +298,6 @@ hide:
 ```
 
 [^11]: [Configurer l'analytics sur Zensical](https://zensical.org/docs/setup/analytics/#was-this-page-helpful)
-
 
 ### Déployer sur pages
 

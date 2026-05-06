@@ -52,3 +52,4 @@ pièges, on évoquera les limites et alternatives.
 ## Sommaire
 
 - [Documentation As Code](docs-as-code.md) — Présente l'approche « Documentation as Code », les outils et bonnes pratiques.
+- [Convention Over Configuration](convention-over-config.md) — Privilégier des normes que réinventer la roue pour améliorer l'UX.

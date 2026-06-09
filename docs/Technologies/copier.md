@@ -21,7 +21,7 @@ présente quelques caractéristiques notables:
 
 - **Simplicité** : les templates sont des fichiers texte utilisant Jinja2, faciles à lire et à éditer.
 - **Mise à jour** : workflow d'`update` intégré pour propager les changements du template.
-- **Flexible** : supporte les templates locaux, les dépôts Git et les archives distantes.
+- **Flexible** : supporte les templates locaux et les dépôts Git.
 
 ### Comparaison de l'écosystème des scaffolders
 
@@ -30,7 +30,7 @@ les plus courants, pour vous aider à choisir selon vos besoins.
 
 | Outil | Moteur / format | Mises à jour | Écosystème | Idéal pour |
 |---|---|---:|---|---|
-| **Copier** | Jinja2, fichiers texte | Oui — workflow d'update intégré | Croissant (templates Python & génériques) | Projets maintenables où appliquer des évolutions de template |
+| **Copier** | Jinja2 | Oui — workflow d'update intégré | Croissant (templates Python & génériques) | Projets maintenables où appliquer des évolutions de template |
 | **Cookiecutter** | Jinja2 | Non (génération one‑shot) | Très large (templates Python) | Génération rapide de projets et nombreux templates existants |
 | **Yeoman** | EJS / générateurs Node.js | Variable, selon le générateur | Large (JS/Frontend) | Scaffolding d'apps web / écosystème JavaScript |
 | **degit / git clone** | — (copie brute) | Non | N/A | Copier un starter sans templating ni questions |
@@ -69,7 +69,7 @@ copier copy /chemin/vers/mon-template ./nouveau-projet
 Générer un projet à partir d'un template distant (ex. dépôt Git) :
 
 ```bash
-copier copy https://github.com/Silicoman/copier-uv-python-project.git ./nouveau-projet
+copier copy https://github.com/DiamondLightSource/python-copier-template.git ./nouveau-projet
 ```
 
 Lancez `copier --help` ou `copier copy --help` pour voir les options disponibles.
@@ -82,7 +82,7 @@ dans ce dépôt contient des variables et le `_subdirectory` utilisé par le tem
 Maintenant on va essayer de créer son propre template pour personnaliser notre
 expérience et identifier les capacités de `copier`.
 
-### Structure typique d'un template
+### Structure d'un template
 
 !!! Remarque sur les extensions
 	Les fichiers de template sont interprété par l'extension `.jinja`. Cependant,
@@ -116,10 +116,10 @@ Les fichiers du template peuvent contenir des expressions Jinja2
 certains fichiers[^8] ou de nommer des fichiers avec des expressions Jinja.
 Dans cette exemple, l'existence du fichier `.pre-commit-config.yaml` est
 conditionné par le booleen `use_precommit` que l'on déclarera dans `copier.yml`.
-
+simples
 [^8]: [Conditionner les fichiers](https://copier.readthedocs.io/en/stable/configuring/#conditional-files-and-directories)
 
-### Définir des variables simples
+### Définir des variables
 
 Le template peut déclarer un petit fichier YAML (par exemple `copier.yml`) pour fournir des valeurs par défaut et des aides pour les questions posées pendant la génération. Exemple simple :
 
@@ -196,8 +196,10 @@ copyright_year:
 
 ## Mise à jour d'un projet généré
 
+Une des forces de `copier` est la capacité à appliquer des changements faits
+au template sur un projet déjà généré (workflow d'`update`)[^21].
 
-Une des forces de `copier` est la capacité à appliquer des changements faits au template sur un projet déjà généré (workflow d'`update`).
+[^21]: [workflow copier update](https://copier.readthedocs.io/en/stable/updating/#how-the-update-works)
 
 Commandes de base :
 
@@ -209,13 +211,61 @@ copier copy /chemin/vers/template ./mon-projet
 copier update ./mon-projet
 ```
 
+Lorsque vous allez appliquer l'`update`, il est probable qu'il y est des
+conflits sur les fichiers.
+La résolution des diff peut être fait soit via inline comme une résolution de merge,
+soit par comparaison des fichiers .rej générés.
+
 Flux d'exemple pour une mise à jour :
 
 1. Modifier et committer des changements dans le template (par ex. corriger un fichier de configuration, ajouter une nouvelle option).
 2. Dans le projet généré, exécuter `copier update ./mon-projet`.
 3. Copier affichera un aperçu des changements et proposera d'accepter/ignorer/éditer les modifications. Résolvez les conflits si nécessaire.
 
-Pour l'automatisation, il est possible de réutiliser un fichier d'answers ou d'alimenter les variables en JSON/YAML depuis la ligne de commande (voir `copier --help`).
+Pour l'automatisation, il est possible de réutiliser le fichier d'answers. Vous pourrez
+vous appuyez sur la capacité de migration[^20] avec des commandes à réaliser en `before`
+ou en `after` de l'update pour gérer finement des étapes de migration.
+simples
+[^20]: [option configuration migration](https://copier.readthedocs.io/en/stable/configuring/#migrations)
+
+## Créer un template complexe
+
+Jusqu'à présent, on a survolé les fonctionnalités. Mettons en pratique la
+construction d'un template `copier` générant le squelette d'un projet python
+`uv`.
+
+```
+uv-copier-template/
+├── copier.yml
+├── .gitignore
+├── README.md
+├── template/
+	└── {{ project_slug }}/
+		├── src/
+		│  	└── main.py
+		├── tests/
+		├── .gitignore
+		├── .python-version
+		├── README.md.jinja
+		├── .pre-commit-config.yaml
+		└── .gitlabci.yml
+├── tests/
+│	├── expected-copy/
+└── .gitlabci.yml
+```
+
+### L'intégration continue au service de `copier`
+
+Si vous devez maintenir des templates, vous allez probablement les faire
+évoluer, modifier certains comportements. L'ajout de tests d'assertions
+n'est pas un luxe afin de prévenir des régressions et de tester des
+scénarios d'upgrade.
+
+!!! tips "Créer un catalogue `copier`
+	Pour simplifier l'évolutibilité, chaque template doit rester simple.
+	Si vous multipliez les projets `copier` à maintenir, il peut être judicieux
+	de faire un template `copier` des projets templates pour harmoniser
+	les answers, les expressions jinja utilisées.
 
 ## Conclusion
 

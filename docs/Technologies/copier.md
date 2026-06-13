@@ -742,13 +742,14 @@ du template soit du squelette, soit des questions ont été intégrés sans conf
 	de faire un template `copier` des projets templates pour harmoniser
 	les answers, les expressions jinja utilisées.
 
-`copier` est relativement récent par rapport à ces alternatives. Il existe [quelques bugs
-principalement sur la partie `update`](https://github.com/copier-org/copier/issues). C'est la fonctionnalité phare de `copier` mais qui est la
-plus difficile à implémenter. Cela nécessite un contrat de qui fait quoi entre le projet généré
-et le template pour éviter au maximum des conflits. Si vous automatisez les `update`, il faudra
-bien réfléchir comment résoudre les conflits. Une solution simple serait d'ouvrir une pull request
-avec les fichiers en conflit pour
-
+`copier` est relativement récent par rapport à ces alternatives. Il existe
+[quelques bugs principalement sur la partie `update`](https://github.com/copier-org/copier/issues). C'est la fonctionnalité phare de `copier` mais qui est la
+plus difficile à implémenter. Cela nécessite un contrat de qui fait quoi
+entre le projet généré et le template pour éviter au maximum des conflits.
+Si vous automatisez les `update`, il faudra
+bien réfléchir comment résoudre les conflits. Une solution simple serait
+d'ouvrir une pull request avec les fichiers en conflit pour faire valider
+dans vos chaines CI/CD les changements.
 
 Quelques remarques pour bien démarrer :
 
@@ -757,6 +758,11 @@ Quelques remarques pour bien démarrer :
 - Testez la génération dans un répertoire temporaire avant de l'utiliser en production.
 - Versionnez vos templates (git tags) pour contrôler les mises à jour sur les projets existants.
 - Fournissez un fichier d'exemples `answers` pour les utilisateurs qui veulent automatiser la génération.
+
+!!! tips "Appliquer des `update` à l'échelle"
+	Lorsque vous aurez multiplier les projets se basant sur vore `copier`,
+	vous pourrez combiner `multi-gitter` avec `copier` pour ouvrir massivement
+	des pull requests.
 
 ## Références
 

@@ -25,7 +25,7 @@ présente quelques caractéristiques notables:
 
 ### Comparaison de l'écosystème des scaffolders
 
-Pour comprendre l'intérêt de `copier`, on résume ci-dessous les outils de scaffolding
+Pour comprendre l'intérêt de `copier`, je vous résume ci-dessous les outils de scaffolding
 les plus courants, pour vous aider à choisir selon vos besoins.
 
 | Outil | Moteur / format | Mises à jour | Écosystème | Idéal pour |
@@ -47,7 +47,7 @@ On peut résumé le choix du bon outil pour votre quotidien avec les arguments s
 - Choisissez **Cookiecutter** pour une simplicité maximale et une vaste bibliothèque de templates prêts à l'emploi.
 - Choisissez **Yeoman** pour des generators complexes dans l'écosystème JavaScript.
 
-Étant donné l'intérêt pour la maintenance des projets et la capacité à appliquer des mises à jour, l'attention se porte naturellement sur `copier`.
+Étant donné l'intérêt pour la maintenance des projets et la capacité à appliquer des mises à jour, mon attention se porte naturellement sur `copier`.
 
 ## Utiliser Copier
 
@@ -74,10 +74,11 @@ copier copy https://github.com/DiamondLightSource/python-copier-template.git ./n
 
 Lancez `copier --help` ou `copier copy --help` pour voir les options disponibles.
 
-Le fichier [copier-uv-python-project/copier.yml](copier-uv-python-project/copier.yml)
-dans ce dépôt contient des variables et le `_subdirectory` utilisé par le template.
+Le fichier `copier.yml` du dépôt correspond aux questions interatives
+que vous répondez.
+Le fichier contient des variables et des propriétés de configuration.
 
-## Créer son template de scaffolding
+## Créer son premier template de scaffolding
 
 Maintenant on va essayer de créer son propre template pour personnaliser notre
 expérience et identifier les capacités de `copier`.
@@ -123,7 +124,7 @@ simples
 
 Le template peut déclarer un petit fichier YAML (par exemple `copier.yml`) pour fournir des valeurs par défaut et des aides pour les questions posées pendant la génération. Exemple simple :
 
-```yaml
+```yaml {linenums="1 1 2"}
 # copier.yml (exemple)
 project_name:
   default: "Mon Projet"
@@ -148,7 +149,7 @@ template copier.
 Dans l'exemple ci-dessous, on rajoute des variables calculées, une question
 à choix et des validations.
 
-```yaml
+```yaml {linenums="1 1 2"}
 # copier.yml (exemple)
 project_name:
   default: MonProjet
@@ -165,7 +166,7 @@ project_slug:
     {% elif not (project_slug | regex_search('^[A-Za-z1-9-]+$')) %}
     project_slug doit contenir uniquement des lettres (A-Z, a-z), des chiffres 1-9 et des tirets.
     {% endif %}
-  when: false # Pas de question, valeur calculée
+  when: false # Pas de question, valeur calculée à partir de project_name
 
 python_version:
   type: str
@@ -176,7 +177,7 @@ python_version:
 	- "3.12"
 	- "3.13"
 	- "3.14"
-
+# Pas de question mais possible de surcharger. Defaut: prend année du jour.
 copyright_year:
   type: str
   default: "{{ copyright_year | default('%Y' | strftime) }}"
@@ -205,7 +206,7 @@ Commandes de base :
 
 ```bash
 # Générer (une première fois)
-copier copy /chemin/vers/template ./mon-projet
+copier copy  https://github.com/Silicoman/copier-uv-python-project.git ./mon-projet
 
 # Appliquer les mises à jour du template sur le projet existant
 copier update ./mon-projet
@@ -214,7 +215,7 @@ copier update ./mon-projet
 Lorsque vous allez appliquer l'`update`, il est probable qu'il y est des
 conflits sur les fichiers.
 La résolution des diff peut être fait soit via inline comme une résolution de merge,
-soit par comparaison des fichiers .rej générés.
+soit par comparaison des fichiers `.rej` générés.
 
 Flux d'exemple pour une mise à jour :
 
@@ -228,46 +229,518 @@ ou en `after` de l'update pour gérer finement des étapes de migration.
 simples
 [^20]: [option configuration migration](https://copier.readthedocs.io/en/stable/configuring/#migrations)
 
-## Créer un template complexe
+## Mise en pratique : créer un template complexe évolutif
 
 Jusqu'à présent, on a survolé les fonctionnalités. Mettons en pratique la
 construction d'un template `copier` générant le squelette d'un projet python
-`uv`.
+`uv`. La structure ci-dessous présente un dépôt git.
+Le template est contenu dans un sous répertoire. Les fichiers à la racine
+servent à la configuration du template et des tests de vérification.
+
+Parmis les éléments du template qui seront déployés dans le nouveau projet,
+on trouvera le fichier des réponses. L'enregistrement de la version
+du template utilisé et des paramètres du template permettent d'affiner les
+migrations à faire.
 
 ```
 uv-copier-template/
 ├── copier.yml
 ├── .gitignore
 ├── README.md
+├── includes/
+│	└── name-slug.jinja
 ├── template/
-	└── {{ project_slug }}/
-		├── src/
-		│  	└── main.py
+	│	docs/
+	│	└── index.md.jinja
+	└── src/
+		├── "{% include 'name-slug.jinja' %}"/
+		│  	└── __main__.py.jinja
 		├── tests/
 		├── .gitignore
-		├── .python-version
 		├── README.md.jinja
 		├── .pre-commit-config.yaml
+		├── {{_copier_conf.answers_file}}.jinja
 		└── .gitlabci.yml
 ├── tests/
-│	├── expected-copy/
+│	├── test_scaffold.py
 └── .gitlabci.yml
 ```
+
+Voici quelques éléments exemple de la gestion jinja entre `copier.yml`,
+des variables dynamiques et un fichier jinja contenant des variables.
+
+=== "copier.yml"
+    ```yaml {linenums="1 1 2"}
+	_min_copier_version: "9.15.1"
+	_subdirectory: template
+	_exclude:
+	    - includes
+	_message_after_copy: |
+	    Your package "{{ project_name }}" has been created successfully.
+	_message_after_update: |
+	    Your project "{{ project_name }}" has been updated successfully!
+	    In case there are any conflicts, please resolve them. Then,
+	    you're done.
+	project_name:
+	    type: str
+	    help: What is the package name?
+	    validator: >-
+	        {% if not project_name %}
+	        Name is required.
+	        {% elif not (project_name | regex_search('^[a-zA-Z](?:[a-zA-Z0-9]| (?![ ]))*$')) %}
+	        Only alphanumeric characters and single spaces are allowed.
+	        {% endif %}
+
+	description:
+	    type: str
+	    help: What does the package do?
+	    placeholder: "..."
+	python_version:
+	    type: str
+	    help: What Python version do you want to use?
+	    default: "3.13.6"
+	    validator: >-
+	        {% if not python_version %}
+	        python_version is required.
+	        {% elif not (python_version | regex_search('^\\d+\\.\\d+\\.\\d+$')) %}
+	        python_version must be in the form X.Y.Z (e.g. 3.13.6).
+	        {% endif %}
+	    when: true
+	copyright_year:
+		type: str
+		default: "{{ copyright_year | default('%Y' | strftime) }}"
+		when: false
+	```
+
+=== "pyproject.toml.jinja"
+	```toml {linenums="1 1 2"}
+	[project]
+	name = "{% include pathjoin('includes', 'name-slug.jinja') %}"
+	version = "0.0.0"
+	description = "{{ description }}"
+	authors = []
+	readme = "README.md"
+	requires-python = ">={{ python_version }},<4.0"
+	dependencies = [
+	]
+
+	[project.urls]
+	{% if repository_url %}homepage = "{{ repository_url }}"
+	source = "{{ repository_url }}"{% endif %}
+
+	[build-system]
+	requires = ["uv_build>=0.10.7,<0.11.0"]
+	build-backend = "uv_build"
+
+	[dependency-groups]
+	dev = [
+	    "coverage[toml] (>=7.13.4,<8.0.0)",
+	    "pre-commit (>=4.5.1)",
+	    "pytest (>=8.4.2)",
+	    "ruff (>=0.15.4)"
+	]
+
+	[tool.coverage.report]  # https://coverage.readthedocs.io/en/latest/config.html#report
+	fail_under = 0
+	precision = 1
+	show_missing = true
+	skip_covered = true
+
+	[tool.coverage.run]  # https://coverage.readthedocs.io/en/latest/config.html#run
+	branch = true
+	command_line = "--module pytest"
+	data_file = "reports/.coverage"
+	source = ["src"]
+
+	[tool.coverage.xml]  # https://coverage.readthedocs.io/en/latest/config.html#xml
+	output = "reports/coverage.xml"
+
+	[tool.pytest.ini_options]  # https://docs.pytest.org/en/latest/reference/reference.html#ini-options-ref
+	addopts = "-exitfirst --failed-first --strict-config --strict-markers"
+	testpaths = ["src", "tests"]
+	xfail_strict = true
+	log_file_level = "info"
+	pythonpath = "src"
+
+	[tool.ruff]
+	fix = true
+	line-length = 120
+	src = ["src", "tests"]
+	target-version = "py312"
+	preview = true
+
+	[tool.ruff.lint.flake8-tidy-imports]
+	# Disallow all relative imports.
+	ban-relative-imports = "all"
+	```
+
+=== "includes/name-slug.jinja"
+	```jinja
+	{{ project_name | lower | replace(' ', '-') }}
+	```
+
+=== "{{_copier_conf.answers_file}}.jinja"
+	```jinja
+	# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+	{{ _copier_answers | to_nice_yaml -}}
+	```
+
+!!! warning "expressions jinja"
+	Un fichier include ne doit contenir aucun retour à la ligne au risque
+	d'en diffuser dans les variables.
 
 ### L'intégration continue au service de `copier`
 
 Si vous devez maintenir des templates, vous allez probablement les faire
-évoluer, modifier certains comportements. L'ajout de tests d'assertions
-n'est pas un luxe afin de prévenir des régressions et de tester des
-scénarios d'upgrade.
+évoluer, modifier certains comportements. Dans un premier temps,
+vous devrez rajouter le versionnement avec du `semantic release`.
+L'ajout de tests d'assertions n'est pas un luxe afin de prévenir des
+régressions et de tester des scénarios d'upgrade.
 
-!!! tips "Créer un catalogue `copier`
+``` mermaid
+graph LR
+	Lint[Lint / Static analysis]
+	Lint ==> Tests
+	Tests ==> isMain[Branche principale?]
+	isMain -- no --> End
+	isMain -- yes --> SemanticRelease
+	SemanticRelease --> End
+```
+
+=== "tests/test_scaffold.py"
+	```py {linenums="1 1 2"}
+
+	import subprocess
+	import sys
+	from pathlib import Path
+	import ast
+	import pytest
+
+
+	def _run_copier(template_path: Path,
+					dest: Path,
+					project_name: str = "testproj") -> None:
+	    cmd = [
+	        "copier",
+	        "copy",
+	        str(template_path),
+	        str(dest),
+	        "-f",
+	        "-d",
+	        f"project_name={project_name}",
+	        "-d",
+	        "python_version=3.13.6",
+	        "-d",
+	        "description=testing",
+	    ]
+	    # Use check=True so failures raise and fail the test.
+	    subprocess.run(cmd, check=True,
+						stdout=subprocess.PIPE,
+						stderr=subprocess.STDOUT,
+						text=True, timeout=120)
+
+
+	def test_copier_creates_expected_files(tmp_path: Path):
+	    """Run copier against the local template and assert basic files are rendered."""
+	    template_root = Path(__file__).resolve().parent.parent
+	    dest = tmp_path / "out"
+	    _run_copier(template_root, dest, project_name="testproj")
+
+	    # Basic files
+	    assert (dest / "pyproject.toml").exists(), "pyproject.toml should be created"
+	    assert (dest / "README.md").exists(), "README.md should be created"
+	```
+
+Dans ce test, on réalise un simple controle de l'existence des fichiers.
+ Vous pouvez aller plus loin en comparant le contenu des fichiers, tester
+ des scénarios de migration intermédiaire.
+
+!!! tips "appeler l'api copier en python"
+	```py
+	from copier import run_copy
+
+	# Create a project from a local path
+	run_copy("path/to/project/template", "path/to/destination")
+	```
+
+### Copier Update en pratique
+
+!!! warning "Recommandation prérequis git-ifier"
+	Pour utiliser l'`update` efficacement, votre template doit être versionner.
+	Tout les fichiers de votre dépôt cible doit être commit.
+
+Considérons le scénario où le le template a eu une mis à jour d'une des
+propriétés de `pyproject.toml`.
+Dans ce cas, le `tool.ruff.target-version` passe de `py312` à `py313`.
+
+=== "pyproject.toml.jinja v1"
+	```toml {linenums="1 1 2"}
+	[project]
+	name = "{% include pathjoin('includes', 'name-slug.jinja') %}"
+	version = "0.0.0"
+	description = "{{ description }}"
+	authors = []
+	readme = "README.md"
+	requires-python = ">={{ python_version }},<4.0"
+	dependencies = [
+	]
+
+	[project.urls]
+	{% if repository_url %}homepage = "{{ repository_url }}"
+	source = "{{ repository_url }}"{% endif %}
+
+	[build-system]
+	requires = ["uv_build>=0.10.7,<0.11.0"]
+	build-backend = "uv_build"
+
+	[dependency-groups]
+	dev = [
+	    "coverage[toml] (>=7.13.4,<8.0.0)",
+	    "pre-commit (>=4.5.1)",
+	    "pytest (>=8.4.2)",
+	    "ruff (>=0.15.4)"
+	]
+
+	[tool.coverage.report]
+	fail_under = 0
+	precision = 1
+	show_missing = true
+	skip_covered = true
+
+	[tool.coverage.run]
+	branch = true
+	command_line = "--module pytest"
+	data_file = "reports/.coverage"
+	source = ["src"]
+
+	[tool.coverage.xml]
+	output = "reports/coverage.xml"
+
+	[tool.pytest.ini_options]
+	addopts = "-exitfirst --failed-first --strict-config --strict-markers"
+	testpaths = ["src", "tests"]
+	xfail_strict = true
+	log_file_level = "info"
+	pythonpath = "src"
+
+	[tool.ruff]
+	fix = true
+	line-length = 120
+	src = ["src", "tests"]
+	target-version = "py312"
+	preview = true
+
+	[tool.ruff.lint.flake8-tidy-imports]
+	# Disallow all relative imports.
+	ban-relative-imports = "all"
+	```
+=== "pyproject.toml.jinja v2"
+	```toml {linenums="1 1 2"}
+	[project]
+	name = "{% include pathjoin('includes', 'name-slug.jinja') %}"
+	version = "0.0.0"
+	description = "{{ description }}"
+	authors = []
+	readme = "README.md"
+	requires-python = ">={{ python_version }},<4.0"
+	dependencies = [
+	]
+
+	[project.urls]
+	{% if repository_url %}homepage = "{{ repository_url }}"
+	source = "{{ repository_url }}"{% endif %}
+
+	[build-system]
+	requires = ["uv_build>=0.10.7,<0.11.0"]
+	build-backend = "uv_build"
+
+	[dependency-groups]
+	dev = [
+	    "coverage[toml] (>=7.13.4,<8.0.0)",
+	    "pre-commit (>=4.5.1)",
+	    "pytest (>=8.4.2)",
+	    "ruff (>=0.15.4)"
+	]
+
+	[tool.coverage.report]
+	fail_under = 0
+	precision = 1
+	show_missing = true
+	skip_covered = true
+
+	[tool.coverage.run]
+	branch = true
+	command_line = "--module pytest"
+	data_file = "reports/.coverage"
+	source = ["src"]
+
+	[tool.coverage.xml]
+	output = "reports/coverage.xml"
+
+	[tool.pytest.ini_options]
+	addopts = "-exitfirst --failed-first --strict-config --strict-markers"
+	testpaths = ["src", "tests"]
+	xfail_strict = true
+	log_file_level = "info"
+	pythonpath = "src"
+
+	[tool.ruff]
+	fix = true
+	line-length = 120
+	src = ["src", "tests"]
+	target-version = "py313"
+	preview = true
+
+	[tool.ruff.lint.flake8-tidy-imports]
+	# Disallow all relative imports.
+	ban-relative-imports = "all"
+	```
+
+En parralèle notre projet a évolué en ajoutant des dépendances et en
+montant de version. Mais on va appliquer les upgrades du template et on va mettre à
+jour un des paramètres du template.
+
+```sh
+	copier update mydemo --skip-answered --data python_version="3.14.3"
+```
+
+=== "pyproject.toml v1"
+	```toml hl_lines="2 3"
+
+	[project]
+	name = "mydemo"
+	version = "1.0.0"
+	description = "my super demo"
+	authors = []
+	readme = "README.md"
+	requires-python = ">=3.13.6,<4.0"
+	dependencies = [
+	    "requests>=2.34.2",
+	]
+
+	[project.urls]
+
+
+	[build-system]
+	requires = ["uv_build>=0.10.7,<0.11.0"]
+	build-backend = "uv_build"
+
+	[dependency-groups]
+	dev = [
+	    "coverage[toml] (>=7.13.4,<8.0.0)",
+	    "pre-commit (>=4.5.1)",
+	    "pytest (>=8.4.2)",
+	    "ruff (>=0.15.4)"
+	]
+
+	[tool.coverage.report]
+	fail_under = 0
+	precision = 1
+	show_missing = true
+	skip_covered = true
+
+	[tool.coverage.run]
+	branch = true
+	command_line = "--module pytest"
+	data_file = "reports/.coverage"
+	source = ["src"]
+
+	[tool.coverage.xml]
+	output = "reports/coverage.xml"
+
+	[tool.pytest.ini_options]
+	addopts = "-exitfirst --failed-first --strict-config --strict-markers"
+	testpaths = ["src", "tests"]
+	xfail_strict = true
+	log_file_level = "info"
+	pythonpath = "src"
+
+	[tool.ruff]
+	fix = true
+	line-length = 120
+	src = ["src", "tests"]
+	target-version = "py312"
+	preview = true
+
+	[tool.ruff.lint.flake8-tidy-imports]
+	# Disallow all relative imports.
+	ban-relative-imports = "all"
+	```
+
+=== "pyproject.toml v2"
+	```toml {linenums="1 1 2"}
+	[project]
+	name = "totu"
+	version = "1.0.0"
+	description = "my super tuatoat"
+	authors = []
+	readme = "README.md"
+	requires-python = ">=3.14.3,<4.0"
+	dependencies = [
+	    "requests>=2.34.2",
+	]
+
+	[project.urls]
+
+
+	[build-system]
+	requires = ["uv_build>=0.10.7,<0.11.0"]
+	build-backend = "uv_build"
+
+	[dependency-groups]
+	dev = [
+	    "coverage[toml] (>=7.13.4,<8.0.0)",
+	    "pre-commit (>=4.5.1)",
+	    "pytest (>=8.4.2)",
+	    "ruff (>=0.15.4)"
+	]
+
+	[tool.coverage.report]
+	fail_under = 0
+	precision = 1
+	show_missing = true
+	skip_covered = true
+
+	[tool.coverage.run]
+	branch = true
+	command_line = "--module pytest"
+	data_file = "reports/.coverage"
+	source = ["src"]
+
+	[tool.coverage.xml]
+	output = "reports/coverage.xml"
+
+	[tool.pytest.ini_options]
+	addopts = "-exitfirst --failed-first --strict-config --strict-markers"
+	testpaths = ["src", "tests"]
+	xfail_strict = true
+	log_file_level = "info"
+	pythonpath = "src"
+
+	[tool.ruff]
+	fix = true
+	line-length = 120
+	src = ["src", "tests"]
+	target-version = "py313"
+	preview = true
+
+	[tool.ruff.lint.flake8-tidy-imports]
+	# Disallow all relative imports.
+	ban-relative-imports = "all"
+	```
+
+Les modifications du projet n'ont plus qu'à être commit.
+L'ensemble des modifications venant
+du template soit du squelette, soit des questions ont été intégrés sans conflit.
+
+
+## Conclusion
+
+!!! tip "Créer un catalogue `copier`"
 	Pour simplifier l'évolutibilité, chaque template doit rester simple.
 	Si vous multipliez les projets `copier` à maintenir, il peut être judicieux
 	de faire un template `copier` des projets templates pour harmoniser
 	les answers, les expressions jinja utilisées.
-
-## Conclusion
 
 `copier` est relativement récent par rapport à ces alternatives. Il existe [quelques bugs
 principalement sur la partie `update`](https://github.com/copier-org/copier/issues). C'est la fonctionnalité phare de `copier` mais qui est la
@@ -290,6 +763,6 @@ Quelques remarques pour bien démarrer :
 - [Documentation officielle de `copier`](https://copier.readthedocs.io/en/stable/)
 - [Exemple d'une source d'inspiration d'un template copier `uv`](https://github.com/lukin0110/uv-copier/tree/main)
 
-- Exemple local de template utilisé dans ce workspace : [copier-uv-python-project/copier.yml](copier-uv-python-project/copier.yml)
+- Exemple local de template utilisé dans ce workspace : [copier-uv-python-project](copier-uv-python-project)
 
 ---

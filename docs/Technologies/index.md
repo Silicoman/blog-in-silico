@@ -1,5 +1,5 @@
 ---
-
+icon: lucide/rocket
 title: Technologies
 hide:
     - toc
@@ -18,3 +18,4 @@ vous aideront à pratiquer.
 ## Sommaire
 
 - [Zensical](Zensical/index.md) — un site static generator.
+- [Copier](Copier/index.md) - un scaffolder.

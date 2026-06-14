@@ -1,4 +1,6 @@
 ---
+#sicon: lucide/s
+icon: lucide/copy
 title: Scaffolding avec Copier
 description: "Générer de nouveaux projets à partir d'un archétype avec Copier — accélère l'initialisation et facilite les mises à jour."
 tags:
@@ -19,33 +21,7 @@ Ce que vous allez apprendre :
 - comment définir des variables et des règles de rendu;
 - comment appliquer une mise à jour sur un projet déjà généré.
 
-## Démarrer en 10 minutes
-
-Voici la séquence la plus courte pour tester `copier` sur un exemple réel :
-
-1. Installez l'outil :
-
-   ```bash
-   pip install copier
-   ```
-
-2. Générez un projet à partir du template de référence fourni dans ce workspace :
-
-   ```bash
-   copier copy ../copier-uv-python-project ./mon-projet
-   ```
-
-3. Répondez aux questions posées par `copier` et ouvrez le projet généré.
-4. Appliquez ensuite une mise à jour avec :
-
-   ```bash
-   copier update ./mon-projet
-   ```
-
-Cette boucle simple permet de comprendre rapidement la logique de base avant de
-construire un template plus élaboré.
-
-## Qu'est-ce que copier ?
+## :lucide-message-circle-question-mark: Qu'est-ce que copier
 
 <img src="https://raw.githubusercontent.com/copier-org/copier/refs/heads/master/img/logo.svg" alt="Copier Logo" style="float:left; margin:0 1rem 1rem 0; object-fit:cover;" />
 
@@ -55,7 +31,7 @@ construire un template plus élaboré.
 - **Mise à jour** : workflow d'`update` intégré pour propager les changements du template.
 - **Flexible** : supporte les templates locaux et les dépôts Git.
 
-### Comparaison de l'écosystème des scaffolders
+### :lucide-chart-column-stacked: Comparaison de l'écosystème des scaffolders
 
 Pour comprendre l'intérêt de `copier`, je vous résume ci-dessous les outils de scaffolding
 les plus courants, pour vous aider à choisir selon vos besoins.
@@ -81,18 +57,15 @@ On peut résumé le choix du bon outil pour votre quotidien avec les arguments s
 
 Étant donné l'intérêt pour la maintenance des projets et la capacité à appliquer des mises à jour, mon attention se porte naturellement sur `copier`.
 
-## Utiliser Copier
+## :lucide-fast-forward: Utiliser Copier - Quickstart en 5 minutes
 
-### Prérequis
-
-Installez `copier` dans votre environnement Python :
+1. Installez `copier` dans votre environnement Python :
 
 ```bash
 pip install copier
 ```
-### Génération d'un exemple rapide
 
-Générer un projet à partir d'un template local :
+2. Générer un projet à partir d'un template local :
 
 ```bash
 copier copy /chemin/vers/mon-template ./nouveau-projet
@@ -104,18 +77,32 @@ Générer un projet à partir d'un template distant (ex. dépôt Git) :
 copier copy https://github.com/DiamondLightSource/python-copier-template.git ./nouveau-projet
 ```
 
+3. Répondez aux questions posées par `copier` et ouvrez le projet généré.
+
 Lancez `copier --help` ou `copier copy --help` pour voir les options disponibles.
+
+
+4. Optionnel: appliquez ensuite une mise à jour avec :
+
+   ```bash
+   copier update ./nouveau-projet
+   ```
+
+
+Cette boucle simple permet de comprendre rapidement la logique de base avant de
+construire un template plus élaboré.
 
 Le fichier `copier.yml` du dépôt correspond aux questions interactives
 que vous répondez.
 Le fichier contient des variables et des propriétés de configuration.
 
-## Créer son premier template de scaffolding
+
+## :lucide-pencil-line: Créer son premier template de scaffolding
 
 Maintenant on va essayer de créer son propre template pour personnaliser notre
 expérience et identifier les capacités de `copier`.
 
-### Structure d'un template
+### :lucide-folder-tree: Structure d'un template
 
 !!! Remarque sur les extensions
 	Les fichiers de template sont interprété par l'extension `.jinja`. Cependant,
@@ -174,8 +161,6 @@ use_precommit:
 
 Pendant la génération, `copier` vous posera ces questions et utilisera les réponses pour rendre les fichiers du template précédent.
 
-### Variables avancées
-
 Explorons les options avancées des variables pour simplifier et durcir notre
 template copier.
 Dans l'exemple ci-dessous, on rajoute des variables calculées, une question
@@ -223,16 +208,16 @@ copyright_year:
 	devenir imbuvables ou répétés à plusieurs endroits. Pour simplifier,
 	vous pouvez inclure des expressions.[^11]
 
-[^9]: [questions avec des choix avancées](https://copier.readthedocs.io/en/stable/configuring/#advanced-prompt-formatting)
-[^10]: [inclusion de questions depuis d'autres yaml](https://copier.readthedocs.io/en/stable/configuring/#include-other-yaml-files)
-[^11]: [importer des expressions jinjas](https://copier.readthedocs.io/en/stable/configuring/#importing-jinja-templates-and-macros)
+[^9]: [Questions avec des choix avancées](https://copier.readthedocs.io/en/stable/configuring/#advanced-prompt-formatting)
+[^10]: [Inclusion de questions depuis d'autres yaml](https://copier.readthedocs.io/en/stable/configuring/#include-other-yaml-files)
+[^11]: [Importer des expressions jinjas](https://copier.readthedocs.io/en/stable/configuring/#importing-jinja-templates-and-macros)
 
-## Mise à jour d'un projet généré
+## :lucide-circle-fading-arrow-up: Mise à jour d'un projet généré
 
 Une des forces de `copier` est la capacité à appliquer des changements faits
 au template sur un projet déjà généré (workflow d'`update`)[^21].
 
-[^21]: [workflow copier update](https://copier.readthedocs.io/en/stable/updating/#how-the-update-works)
+[^21]: [Workflow copier update](https://copier.readthedocs.io/en/stable/updating/#how-the-update-works)
 
 Commandes de base :
 
@@ -259,9 +244,10 @@ Pour l'automatisation, il est possible de réutiliser le fichier d'answers. Vous
 pouvez vous appuyer sur la capacité de migration[^20] avec des commandes à
 réaliser en `before` ou en `after` de l'update pour gérer finement des étapes
 de migration simples.
-[^20]: [option configuration migration](https://copier.readthedocs.io/en/stable/configuring/#migrations)
 
-## Créer un template complexe évolutif
+[^20]: [Option configuration migration](https://copier.readthedocs.io/en/stable/configuring/#migrations)
+
+## :lucide-pickaxe: Créer un template complexe évolutif
 
 Jusqu'à présent, on a survolé les fonctionnalités. Mettons en pratique la
 construction d'un template `copier` générant le squelette d'un projet python
@@ -273,6 +259,25 @@ Parmi les éléments du template qui seront déployés dans le nouveau projet,
 on trouvera le fichier des réponses. L'enregistrement de la version
 du template utilisé et des paramètres du template permet d'affiner les
 migrations à faire.
+
+!!! tip "gérer un template comme un projet"
+	Pour l'efficience, j'utilise `uv` et la configuration par `pyproject.toml`
+	pour gérer le venv et mes dépendances de mon template.
+	```toml {linenums="1 1 2"}
+		[project]
+		name = "copier-uv-python-project"
+		version = "0.1.0"
+		description = "Scaffolding by copier of a python package"
+		readme = "README.md"
+		requires-python = ">=3.13"
+		dependencies = [
+		    "copier>=9.15.1"
+		]
+		[dependency-groups]
+		dev = [
+		    "pytest>=9.0.3",
+		]
+	```
 
 ```
 uv-copier-template/
@@ -295,6 +300,7 @@ uv-copier-template/
 		└── .gitlabci.yml
 ├── tests/
 │	├── test_scaffold.py
+├── pyproject.toml
 └── .gitlabci.yml
 ```
 
@@ -302,7 +308,7 @@ Voici quelques éléments exemple de la gestion jinja entre `copier.yml`,
 des variables dynamiques et un fichier jinja contenant des variables.
 
 === "copier.yml"
-    ```yaml {linenums="1 1 2"}
+    ```yaml
 	_min_copier_version: "9.15.1"
 	_subdirectory: template
 	_exclude:
@@ -407,12 +413,12 @@ des variables dynamiques et un fichier jinja contenant des variables.
 	```
 
 === "includes/name-slug.jinja"
-	```jinja
+	```jinja {linenums="1 1 2"}
 	{{ project_name | lower | replace(' ', '-') }}
 	```
 
 === "{{_copier_conf.answers_file}}.jinja"
-	```jinja
+	```jinja {linenums="1 1 2"}
 	# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
 	{{ _copier_answers | to_nice_yaml -}}
 	```
@@ -421,7 +427,7 @@ des variables dynamiques et un fichier jinja contenant des variables.
 	Un fichier include ne doit contenir aucun retour à la ligne au risque
 	d'en diffuser dans les variables.
 
-### L'intégration continue au service de `copier`
+### :lucide-infinity: L'intégration continue au service de `copier`
 
 Si vous devez maintenir des templates, vous allez probablement les faire
 évoluer, modifier certains comportements. Dans un premier temps,
@@ -495,7 +501,7 @@ des scénarios de migration intermédiaire.
 	run_copy("path/to/project/template", "path/to/destination")
 	```
 
-### Copier Update en pratique
+### :lucide-circle-fading-arrow-up: Copier Update en pratique
 
 !!! warning "Recommandation prérequis git-ifier"
 	Pour utiliser l'`update` efficacement, votre template doit être versionner.
@@ -506,7 +512,7 @@ propriétés de `pyproject.toml`.
 Dans ce cas, le `tool.ruff.target-version` passe de `py312` à `py313`.
 
 === "pyproject.toml.jinja v1"
-	```toml {linenums="1 1 2"}
+	```toml hl_lines="53"
 	[project]
 	name = "{% include pathjoin('includes', 'name-slug.jinja') %}"
 	version = "0.0.0"
@@ -567,7 +573,7 @@ Dans ce cas, le `tool.ruff.target-version` passe de `py312` à `py313`.
 	ban-relative-imports = "all"
 	```
 === "pyproject.toml.jinja v2"
-	```toml {linenums="1 1 2"}
+	```toml hl_lines="53"
 	[project]
 	name = "{% include pathjoin('includes', 'name-slug.jinja') %}"
 	version = "0.0.0"
@@ -633,11 +639,11 @@ montant de version. Nous allons maintenant appliquer les mises à jour du
 template et modifier un des paramètres de génération.
 
 ```sh
-	copier update mydemo --skip-answered --data python_version="3.14.3"
+	copier update mon-projet --skip-answered --data python_version="3.14.3"
 ```
 
 === "pyproject.toml v1"
-	```toml hl_lines="2 3"
+	```toml hl_lines="3 9 53"
 
 	[project]
 	name = "mydemo"
@@ -700,11 +706,11 @@ template et modifier un des paramètres de génération.
 	```
 
 === "pyproject.toml v2"
-	```toml {linenums="1 1 2"}
+	```toml hl_lines="3 9 53"
 	[project]
-	name = "totu"
+	name = "mydemo"
 	version = "1.0.0"
-	description = "my super tuatoat"
+	description = "my super demo"
 	authors = []
 	readme = "README.md"
 	requires-python = ">=3.14.3,<4.0"
@@ -765,17 +771,18 @@ Les modifications du projet n'ont plus qu'à être commit.
 L'ensemble des modifications venant du template, que ce soit le squelette ou les
 questions, a été intégré sans conflit.
 
-## Pièges fréquents
+## :lucide-triangle-alert: Pièges fréquents
 
 - Ne pas oublier de versionner le template avant d'utiliser `copier update`.
 - Éviter de modifier manuellement les fichiers générés si vous voulez garder la
-  possibilité de fusionner les mises à jour.
+  possibilité de fusionner les mises à jour. Ne jamais modifier le fichier des
+  réponses sans passer par copier.
 - Vérifier les variables de `copier.yml` lorsque vous ajoutez une option de
   génération : une variable mal nommée peut casser un rendu.
 - Préparer un scénario de migration simple si vous devez faire évoluer un
   template déjà utilisé en production.
 
-## Conclusion
+## :lucide-flag: Conclusion
 
 !!! tip "Créer un catalogue `copier`"
 	Pour simplifier l'évolutibilité, chaque template doit rester simple.
@@ -824,7 +831,5 @@ maintenu mais ça mérite d'y jeter un oeil si vous voulez une source d'inspirat
 
 - [Documentation officielle de `copier`](https://copier.readthedocs.io/en/stable/)
 - [Exemple d'une source d'inspiration d'un template copier `uv`](https://github.com/lukin0110/uv-copier/tree/main)
-
-- Exemple local de template utilisé dans ce workspace : [copier-uv-python-project](copier-uv-python-project)
 
 ---

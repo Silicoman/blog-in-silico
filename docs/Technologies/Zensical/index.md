@@ -1,4 +1,5 @@
 ---
+icon: lucide/file-text
 title: Zensical, un Static Site Generator à base de Markdown
 description: "Qu'est-ce que Zensical ? Plongeons dans l'histoire de Zensical.
 Evaluons ces points forts et points faibles dans la mise en oeuvre de ce static site generator pour la documentation."

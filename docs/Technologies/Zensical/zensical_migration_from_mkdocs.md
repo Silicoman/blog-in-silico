@@ -1,4 +1,5 @@
 ---
+icon: lucide/signpost-big
 title: Migrer de MkDocs vers Zensical
 description: "Tutoriel pour migrer une documentation MkDocs
 (ou Material for MkDocs) vers le générateur statique Zensical."
@@ -174,7 +175,7 @@ et `mkdocs build` par une séquence équivalente :
         uv run zensical build --config-file mkdocs.yml --strict
 ```
 
-## Conclusion
+## :lucide-flag: Conclusion
 
 En fonction de la complexité de la personnalisation, il faudra probablement
 investir un peu plus au cas par cas que ce guide.

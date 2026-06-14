@@ -117,12 +117,12 @@ Les fichiers du template peuvent contenir des expressions Jinja2
 certains fichiers[^8] ou de nommer des fichiers avec des expressions Jinja.
 Dans cette exemple, l'existence du fichier `.pre-commit-config.yaml` est
 conditionné par le booleen `use_precommit` que l'on déclarera dans `copier.yml`.
-simples
+
 [^8]: [Conditionner les fichiers](https://copier.readthedocs.io/en/stable/configuring/#conditional-files-and-directories)
 
 ### Définir des variables
 
-Le template peut déclarer un petit fichier YAML (par exemple `copier.yml`) pour fournir des valeurs par défaut et des aides pour les questions posées pendant la génération. Exemple simple :
+Le template peut déclarer un fichier YAML (par exemple `copier.yml`) pour fournir des valeurs par défaut et des aides pour les questions posées pendant la génération. Exemple :
 
 ```yaml {linenums="1 1 2"}
 # copier.yml (exemple)
@@ -140,7 +140,7 @@ use_precommit:
 	help: "Voulez-vous pre-commit?"
 ```
 
-Pendant la génération, `copier` vous posera ces questions et utilisera les réponses pour rendre les fichiers du template.
+Pendant la génération, `copier` vous posera ces questions et utilisera les réponses pour rendre les fichiers du template précédent.
 
 ### Variables avancées
 
@@ -221,7 +221,7 @@ Flux d'exemple pour une mise à jour :
 
 1. Modifier et committer des changements dans le template (par ex. corriger un fichier de configuration, ajouter une nouvelle option).
 2. Dans le projet généré, exécuter `copier update ./mon-projet`.
-3. Copier affichera un aperçu des changements et proposera d'accepter/ignorer/éditer les modifications. Résolvez les conflits si nécessaire.
+3. Copier affichera un aperçu des changements et proposera d'accepter/ignorer/éditer les modifications. Résolvez les conflits si nécessaire et commit.
 
 Pour l'automatisation, il est possible de réutiliser le fichier d'answers. Vous pourrez
 vous appuyez sur la capacité de migration[^20] avec des commandes à réaliser en `before`
@@ -229,7 +229,7 @@ ou en `after` de l'update pour gérer finement des étapes de migration.
 simples
 [^20]: [option configuration migration](https://copier.readthedocs.io/en/stable/configuring/#migrations)
 
-## Mise en pratique : créer un template complexe évolutif
+## Créer un template complexe évolutif
 
 Jusqu'à présent, on a survolé les fonctionnalités. Mettons en pratique la
 construction d'un template `copier` générant le squelette d'un projet python
@@ -761,8 +761,23 @@ Quelques remarques pour bien démarrer :
 
 !!! tips "Appliquer des `update` à l'échelle"
 	Lorsque vous aurez multiplier les projets se basant sur vore `copier`,
-	vous pourrez combiner `multi-gitter` avec `copier` pour ouvrir massivement
-	des pull requests.
+	vous pourrez combiner `multi-gitter`[^40] avec `copier` pour ouvrir massivement
+	des pull requests. Votre flux de travail automatique pourrra etre le suivant :
+	``` mermaid
+	graph LR
+		Evol["nouvelle version\ntemplate copier\npubliée"]
+		Evol -- "parcourir\npar multi-gitter\n les dépôts" --> MR["création\n des PR"]
+		MR --> COPIER["Appliquer\ncopier update\n + commit"]
+		COPIER --> CICD["Jobs CI\n validation aucune régression"]
+		CICD -- success --> END["Merge"]
+	```
+
+[^40]: [multi-gitter](https://github.com/lindell/multi-gitter) automatise la création des pull/merge requests, applique un script sur chaque dépôt et commit. Il peut finaliser le travail en mergeant automatiquement.
+
+Pour ceux qui travaillent de près ou de loin sur les `internal developer platform`,
+il existe le projet [scaffolder-backend-module-copier](https://github.com/telia-oss/scaffolder-backend-module-copier) pour l'intégration avec `backstage`. Le projet n'est plus
+maintenu mais ça mérite d'y jeter un oeil si vous voulez une source d'inspiration.
+
 
 ## Références
 

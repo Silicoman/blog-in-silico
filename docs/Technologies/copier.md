@@ -5,19 +5,51 @@ tags:
     - scaffolding
 ---
 
-J'ai l'habitude de générer plein de projet applicatif. L'incovénient est que
-je me retrouve à toujours faire les mêmes manipulations pour générer un
-squelette fonctionnel. C'est encore plus vrai dans un éco-système air-gap
-d'entreprise. Cet article s'intéresse à un outil permettant
-de construire un archetype (*template*) à l'aide de `copier` pour simplifier
-cette étape.
+J'ai l'habitude de générer plein de projets applicatifs. L'inconvénient est que
+je me retrouve à toujours répéter les mêmes manipulations pour obtenir un
+squelette fonctionnel. C'est encore plus vrai dans un écosystème air-gap
+entreprise. Ce guide vous montre comment `copier` permet de construire un
+archétype (*template*) puis de le réutiliser et le maintenir sans repartir de
+zéro.
+
+Ce que vous allez apprendre :
+
+- quand choisir `copier` plutôt qu'un autre scaffolder;
+- comment générer un projet à partir d'un template simple;
+- comment définir des variables et des règles de rendu;
+- comment appliquer une mise à jour sur un projet déjà généré.
+
+## Démarrer en 10 minutes
+
+Voici la séquence la plus courte pour tester `copier` sur un exemple réel :
+
+1. Installez l'outil :
+
+   ```bash
+   pip install copier
+   ```
+
+2. Générez un projet à partir du template de référence fourni dans ce workspace :
+
+   ```bash
+   copier copy ../copier-uv-python-project ./mon-projet
+   ```
+
+3. Répondez aux questions posées par `copier` et ouvrez le projet généré.
+4. Appliquez ensuite une mise à jour avec :
+
+   ```bash
+   copier update ./mon-projet
+   ```
+
+Cette boucle simple permet de comprendre rapidement la logique de base avant de
+construire un template plus élaboré.
 
 ## Qu'est-ce que copier ?
 
 <img src="https://raw.githubusercontent.com/copier-org/copier/refs/heads/master/img/logo.svg" alt="Copier Logo" style="float:left; margin:0 1rem 1rem 0; object-fit:cover;" />
 
-[`copier` est un outil de scaffolding](https://copier.readthedocs.io/en/stable/) (génération de projet) léger et moderne basé sur des templates Jinja2. Il permet de générer rapidement un projet à partir d'un modèle (*template*) et d'appliquer ensuite les évolutions du template sur les projets existants. de première abord, l'outil
-présente quelques caractéristiques notables:
+[`copier` est un outil de scaffolding](https://copier.readthedocs.io/en/stable/) (génération de projet) léger et moderne basé sur des templates Jinja2. Il permet de générer rapidement un projet à partir d'un modèle (*template*) et d'appliquer ensuite les évolutions du template sur les projets existants. De prime abord, l'outil présente quelques caractéristiques notables :
 
 - **Simplicité** : les templates sont des fichiers texte utilisant Jinja2, faciles à lire et à éditer.
 - **Mise à jour** : workflow d'`update` intégré pour propager les changements du template.
@@ -74,7 +106,7 @@ copier copy https://github.com/DiamondLightSource/python-copier-template.git ./n
 
 Lancez `copier --help` ou `copier copy --help` pour voir les options disponibles.
 
-Le fichier `copier.yml` du dépôt correspond aux questions interatives
+Le fichier `copier.yml` du dépôt correspond aux questions interactives
 que vous répondez.
 Le fichier contient des variables et des propriétés de configuration.
 
@@ -113,10 +145,10 @@ my-template/
 ```
 
 Les fichiers du template peuvent contenir des expressions Jinja2
-(ex. `{{ project_name }}`). Il est aussi possible de rendre conditionnel
+(ex. `{{ project_name }}`). Il est aussi possible de rendre conditionnels
 certains fichiers[^8] ou de nommer des fichiers avec des expressions Jinja.
-Dans cette exemple, l'existence du fichier `.pre-commit-config.yaml` est
-conditionné par le booleen `use_precommit` que l'on déclarera dans `copier.yml`.
+Dans cet exemple, l'existence du fichier `.pre-commit-config.yaml` est
+conditionnée par le booléen `use_precommit` que l'on déclarera dans `copier.yml`.
 
 [^8]: [Conditionner les fichiers](https://copier.readthedocs.io/en/stable/configuring/#conditional-files-and-directories)
 
@@ -212,10 +244,10 @@ copier copy  https://github.com/Silicoman/copier-uv-python-project.git ./mon-pro
 copier update ./mon-projet
 ```
 
-Lorsque vous allez appliquer l'`update`, il est probable qu'il y est des
+Lorsque vous appliquez l'`update`, il est probable qu'il y ait des
 conflits sur les fichiers.
-La résolution des diff peut être fait soit via inline comme une résolution de merge,
-soit par comparaison des fichiers `.rej` générés.
+La résolution des diffs peut se faire soit en mode inline, comme une résolution
+de merge, soit par comparaison des fichiers `.rej` générés.
 
 Flux d'exemple pour une mise à jour :
 
@@ -223,10 +255,10 @@ Flux d'exemple pour une mise à jour :
 2. Dans le projet généré, exécuter `copier update ./mon-projet`.
 3. Copier affichera un aperçu des changements et proposera d'accepter/ignorer/éditer les modifications. Résolvez les conflits si nécessaire et commit.
 
-Pour l'automatisation, il est possible de réutiliser le fichier d'answers. Vous pourrez
-vous appuyez sur la capacité de migration[^20] avec des commandes à réaliser en `before`
-ou en `after` de l'update pour gérer finement des étapes de migration.
-simples
+Pour l'automatisation, il est possible de réutiliser le fichier d'answers. Vous
+pouvez vous appuyer sur la capacité de migration[^20] avec des commandes à
+réaliser en `before` ou en `after` de l'update pour gérer finement des étapes
+de migration simples.
 [^20]: [option configuration migration](https://copier.readthedocs.io/en/stable/configuring/#migrations)
 
 ## Créer un template complexe évolutif
@@ -237,9 +269,9 @@ construction d'un template `copier` générant le squelette d'un projet python
 Le template est contenu dans un sous répertoire. Les fichiers à la racine
 servent à la configuration du template et des tests de vérification.
 
-Parmis les éléments du template qui seront déployés dans le nouveau projet,
+Parmi les éléments du template qui seront déployés dans le nouveau projet,
 on trouvera le fichier des réponses. L'enregistrement de la version
-du template utilisé et des paramètres du template permettent d'affiner les
+du template utilisé et des paramètres du template permet d'affiner les
 migrations à faire.
 
 ```
@@ -451,9 +483,9 @@ graph LR
 	    assert (dest / "README.md").exists(), "README.md should be created"
 	```
 
-Dans ce test, on réalise un simple controle de l'existence des fichiers.
- Vous pouvez aller plus loin en comparant le contenu des fichiers, tester
- des scénarios de migration intermédiaire.
+Dans ce test, on réalise un simple contrôle de l'existence des fichiers.
+Vous pouvez aller plus loin en comparant le contenu des fichiers et en testant
+des scénarios de migration intermédiaire.
 
 !!! tips "appeler l'api copier en python"
 	```py
@@ -469,7 +501,7 @@ Dans ce test, on réalise un simple controle de l'existence des fichiers.
 	Pour utiliser l'`update` efficacement, votre template doit être versionner.
 	Tout les fichiers de votre dépôt cible doit être commit.
 
-Considérons le scénario où le le template a eu une mis à jour d'une des
+Considérons le scénario où le template a eu une mise à jour d'une des
 propriétés de `pyproject.toml`.
 Dans ce cas, le `tool.ruff.target-version` passe de `py312` à `py313`.
 
@@ -596,9 +628,9 @@ Dans ce cas, le `tool.ruff.target-version` passe de `py312` à `py313`.
 	ban-relative-imports = "all"
 	```
 
-En parralèle notre projet a évolué en ajoutant des dépendances et en
-montant de version. Mais on va appliquer les upgrades du template et on va mettre à
-jour un des paramètres du template.
+En parallèle, notre projet a évolué en ajoutant des dépendances et en
+montant de version. Nous allons maintenant appliquer les mises à jour du
+template et modifier un des paramètres de génération.
 
 ```sh
 	copier update mydemo --skip-answered --data python_version="3.14.3"
@@ -730,9 +762,18 @@ jour un des paramètres du template.
 	```
 
 Les modifications du projet n'ont plus qu'à être commit.
-L'ensemble des modifications venant
-du template soit du squelette, soit des questions ont été intégrés sans conflit.
+L'ensemble des modifications venant du template, que ce soit le squelette ou les
+questions, a été intégré sans conflit.
 
+## Pièges fréquents
+
+- Ne pas oublier de versionner le template avant d'utiliser `copier update`.
+- Éviter de modifier manuellement les fichiers générés si vous voulez garder la
+  possibilité de fusionner les mises à jour.
+- Vérifier les variables de `copier.yml` lorsque vous ajoutez une option de
+  génération : une variable mal nommée peut casser un rendu.
+- Préparer un scénario de migration simple si vous devez faire évoluer un
+  template déjà utilisé en production.
 
 ## Conclusion
 
@@ -760,9 +801,9 @@ Quelques remarques pour bien démarrer :
 - Fournissez un fichier d'exemples `answers` pour les utilisateurs qui veulent automatiser la génération.
 
 !!! tips "Appliquer des `update` à l'échelle"
-	Lorsque vous aurez multiplier les projets se basant sur vore `copier`,
+	Lorsque vous aurez multiplié les projets se basant sur votre `copier`,
 	vous pourrez combiner `multi-gitter`[^40] avec `copier` pour ouvrir massivement
-	des pull requests. Votre flux de travail automatique pourrra etre le suivant :
+	des pull requests. Votre flux de travail automatique pourra être le suivant :
 	``` mermaid
 	graph LR
 		Evol["nouvelle version\ntemplate copier\npubliée"]

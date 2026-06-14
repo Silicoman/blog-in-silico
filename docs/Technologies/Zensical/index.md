@@ -373,6 +373,7 @@ Ce que l'on apprécie de Zensical :
 
 - un démarrage très rapide
 - de nombreuse fonctionnalité disponible par défaut
+- validation des liens interne (pas besoin de coupler avec d'autres outils)
 - un rendu moderne sans rien faire
 - une courbe d'apprentissage progressive pour monter en puissance
 dans la personnalisation
@@ -408,4 +409,9 @@ Je suis assez satisfait pour continuer à rédiger sur Zensical et porter
 les migrations (légère) de MkDocs. Au fur et à mesure des nouvelles
 releases, vous observerez probablement des enrichissements de ce site.
 
-En revanche, pour mes travaux les plus ambitieux je vais devoir patienter ou commencer à regarder ailleurs. Mais avec une nouvelle version toute les semaines... l'option 1 est ok.
+En revanche, pour mes travaux les plus ambitieux je vais devoir patienter ou commencer à regarder ailleurs[^90]. Mais avec une nouvelle version toute les semaines... l'option 1 est ok.
+
+[^90]: Pour un projet particulier, j'ai déployé
+[MaterialX](jaywhj.github.io/mkdocs-materialx/), un fork de
+`Material for MkDocs` se basant sur `ProperDocs` lui même un fork
+de `MkDocs`. J'ai relativement des doutes sur la pérennité.

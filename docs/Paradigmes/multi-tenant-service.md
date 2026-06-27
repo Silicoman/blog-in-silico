@@ -1,125 +1,186 @@
 ---
-title: "Mettre en oeuvre un produit multi-tenant"
-description: "Lorsqu'on cherche la rationalisation d'un service socle d'infrastructure ou d'outillage, on doit faire cohabiter plusieurs équipes sur ce même service, le multi-tenant. La spécialisation d'une équipe à ce service permet de définir les besoins et la configuration nécessaire aux utilisateurs."
+title: "Produit multi-tenant"
+description: "Ce guide explore le multi-tenant comme solution pour rationaliser les services socles
+  (outillage, infrastructure) dans les organisations à grande échelle. Il détaille :
+  - Les enjeux : pourquoi et quand adopter le multi-tenant.
+  - Les modèles comparés : mono-tenant, multi-tenant, SaaS.
+  - Les défis techniques et opérationnels : isolation, scalabilité, gouvernance.
+  - Les leviers d'optimisation : automatisation, expérience utilisateur, migration.
+"
+icon: lucide/server
 tags:
   - paradigme
+  - architecture
+  - devops
+  - outillage
+hide:
+  - toc
+  - edit
 ---
 
-Le multi-tenant est un concept qui permet de partager les ressources et le
-service entre plusieurs équipes ou services tout en maintenant leur isolation
-respective.
+## :lucide-shield-question-mark: Qu'est-ce que le multi-tenant et quels sont ses défis ?
 
-La problématique des tenants est souvent observé dans les grosses structures >100
-développeurs. On décide de mutualiser un service utilisé par les équipes
-et on y met un responsable. Les développeurs ont déjà une application à
-maintenir, s'occuper de tout un écosystème d'outils (sonarqube, nexus, vault,
-dependency-track, keycloak, etc) devrait être leur dernier des soucis. De plus,
-la dispersion dans la maintenance des outils peut entraîner une sous optimisation
-des usages. Les équipes ne veulent plus la responsabilité du service et les coûts
-associés. Mais en même temps, ils veulent accéder à toutes les fonctionnalités du
-service.
+Dans les grandes organisations, rationaliser les services socles est une réponse
+fréquente au besoin de réduire les coûts et de faire converger les usages.
+Sur un service partagé, plusieurs équipes utilisent la même plateforme, mais
+elles doivent conserver une isolation suffisante pour ne pas se nuire mutuellement.
 
-## Qu'est ce que le multi-tenant et ses défis ?
+La tendance apparaît souvent au-delà de 100 développeurs : un service externe est
+mutualisé, un responsable dédié est nommé, et les équipes ne veulent plus porter
+la charge opérationnelle d'un outil qu'elles consomment.
 
-Le multi-tenant est la volonté de faire cohabiter plusieurs équipes, périmètres sur
-ne même solution technique. Typiquement, vous avez un serveur jenkins ou plusieurs
-équipes peuvent créer des jobs en autonomie. Chaque équipe par leur usage peuvent
-dégrader l'expérience de leur voisin soit en monopolisant des ressources à disposition
-ou créé des régressions.
+### :lucide-book-text: Définition
 
-- Une équipe A spamme la queue des jobs à disposition, l'équipe B doit attendre X heures.
-- L'équipe A a modifié une variable d'environnement que l'équipe B consomme causant une régression.
+Le multi-tenant est un modèle d'architecture où une seule instance d'un service
+est partagée par plusieurs tenants (équipes, projets, périmètres) tout en
+conservant une isolation suffisante entre eux.
+Son intérêt est de réduire les coûts d'exploitation et de maintenance, tout en
+offrant une expertise centralisée.
 
-Lorsque vous réalisez une maintenance, une montée de version, c'est plusieurs équipes
-que vous impactez à la fois. Le droit à l'erreur est donc plus lourd de conséquence.
-Il faut donc mettre en place des mécanismes de contrôle et de surveillance pour éviter
-les régressions et garantir la qualité du service.
+| Service | Problème mono-tenant | Bénéfice multi-tenant |
+| --- | --- | --- |
+| Jenkins | Chaque équipe gère son propre serveur → gaspillage CPU et maintenance | Queue partagée avec quotas et isolation des travaux |
+| SonarQube | Duplication des règles de qualité | Configuration centrale avec profils personnalisés |
+| Nexus/Artifactory | Stockage redondant des artefacts | Espace mutualisé avec isolation des dépôts |
+| Vault | Instances dispersées, politiques hétérogènes | Politique unifiée, audit et rotation centralisés |
+| Keycloak | Multiples instances, complexité SSO | Authentification centralisée et gestion des realms |
 
-Le paradigme du multi-tenant est donc une simplification pour les consommateurs.
-En revanche, il y a un transfert de charge et de complexité pour l'équipe qui
-gère le service.
+### :lucide-activity: Défis
 
-En fonction de si vous décidez de partir d'un brownfield ou greenfield, la
-satisfaction utilisateur dépendra de ce que vous leur retirez et ce que vous leur
-permettrez par rapport aux usages de leur ancien modèle.
+Le multi-tenant simplifie l’accès des consommateurs, mais il déplace la complexité
+vers l’équipe de plateforme.
 
-## Comparaison des différents modèles opérationnelles
+Par exemple, sur un Jenkins partagé :
 
-Le multi-tenant peut sembler un choix évident à large échelle, en
-réalité ce n'est pas automatique. Je distingue trois modèles qui
-reflètent différents dispositifs sur différentes échelles d'organisation.
+- une équipe peut saturer la file d'attente et allonger les temps d'attente pour les autres ;
+- une modification d'environnement d'un tenant peut provoquer une régression chez un autre.
 
-| organisation | avantages | inconvénients | questions ouvertes|
-| ------------ | --------- | ------------- | ----------------- |
-| mono-tenant | autonomie dans la personnalisation, pas de régression subites | nécessité d'une expertise pour des usages intensives et gestion de la maintenance, temps dédié | est-ce que mon expertise est perreine? est-ce que mon cout infra reservé est viable  ? |
-| multi-tenant | partage des ressources infra, mutualisation des gestes de maintenance, expertise du service | contraintes dans l'usage, une équipe dédiée vecteur de coût, problèmes plus complexes avec risques de SPOF | est-ce que le service me permet de faire du multi-tenant? Est-ce que j'ai besoin d'une expertise ? Est-ce que j'ai une économie d'échelle ? Ex: je supporte +10 équipes. |
-| SaaS | simplification facturation | pas d'expertise interne, pas de flexibilité, modèle difficile en air-gap | Est-ce que le modèle économique est pertinent ? Est-ce que mon contexte me l'autorise ? Ex: sensibilité code source |
+Lors d’une mise à jour ou d’une montée de version, l’impact se mesure simultanément
+sur toutes les équipes. Il faut donc renforcer la surveillance, la validation et les
+mécanismes de rollback pour limiter les risques.
 
+Le choix entre un projet *brownfield* ou *greenfield* influence la satisfaction des
+utilisateurs : on ne peut pas retirer plus de fonctionnalité que ce que le service
+apporte en valeur.
 
-## Définir les capacités du service
+## :lucide-search-check: Comparaison des modèles opérationnels
 
-Pour implémenter un modèle Multi-Tenant, il faut envisager des aspects clés tels que:
+Le multi-tenant n’est pas la solution automatique. Selon le contexte, il peut coexister
+avec des modèles mono-tenant ou SaaS.
 
-1. **Isolation**: Assurer une séparation claire des données pour chaque tenant.
-2. **Scalabilité**: La capacité à gérer l'augmentation de la charge due au nombre croissant d'utilisateurs ou services.
-3. **Performance**: Optimiser les ressources et le traitement afin qu'un tenant n'affecte pas négativement un autre.
-4. **Disponibilité**: Quel SLA vous garantissez.
-5. **Personnalisation**: à quel degrès acceptez vous de soit fournir des fonctionnalités différentes ou laisser la main à chaque tenant pour modifier
+| Critère | Mono-tenant | Multi-tenant | SaaS |
+| --- | --- | --- | --- |
+| Coût initial | ❌ Élevé (installation par équipe) | ✅ Faible (1 instance mutualisée) | ⚠️ Variable (abonnements) |
+| Maintenance | ❌ Dispersée | ✅ Centralisée | ✅ Gérée par le fournisseur |
+| Expertise requise | ❌ par équipe | ✅ 1 équipe dédiée | ⚠️ externe |
+| Flexibilité | ✅ Maximale | ⚠️ Limitée mais configurable | ⚠️ Dépend du fournisseur |
+| Isolation | ✅ Totale | ⚠️ À concevoir (logique/physique) | ⚠️ Dépend du fournisseur |
+| Sécurité | ✅ Contrôle total | ✅ Centralisée (mais risque partagé) | ⚠️ Dépend du fournisseur |
+| Compatible Air-gap | ✅ Possible | ✅ Possible | ❌ Difficile |
+| Time-to-market | ❌ Lent | ✅ Rapide | ✅ Immédiat |
 
+Le mono-tenant conserve une autonomie maximale, mais il coûte plus cher et multiplie
+la maintenance. Le SaaS réduit la charge interne, mais renonce au contrôle et à la
+déportation de certaines contraintes. Le multi-tenant est un compromis valable lorsque
+l’on peut standardiser suffisamment les usages et investir dans une équipe de support.
 
-## Leviers d'optimisation
+## :lucide-unplug: Définir les capacités du service
 
-### Expérience utilisateur
+Avant de lancer un produit multi-tenant, définissez clairement les capacités attendues :
 
-L'expérience des utilisateurs doit rester cohérente, quel que soit le tenant avec lequel ils interagissent. Lorsqu'un développeur réalise une mobilité de projet,
-il doit retrouver la majorité du fonctionnement du service partagé sans revenir
-sur une courbe d'apprentissage.
+1. **Isolation** : séparer les données, les traitements et les ressources réseau.
+2. **Scalabilité** : dimensionner le service pour une augmentation du nombre de tenants.
+3. **Performance** : limiter l'impact d'un tenant sur les autres.
+4. **Disponibilité** : fixer des SLA et prévoir des modes de dégradé.
+5. **Personnalisation** : définir jusqu’où chaque tenant peut adapter le service.
+6. **Gouvernance** : valider les règles d'accès, la conformité et l'audit.
+7. **Observabilité** : collecter des métriques par tenant pour détecter les dérives.
 
-L'absence d'attrition des plus anciens
-se fera par un haut niveau de disponibilité. Personne ne veut utiliser un service cassé 1 jour sur 2. Sinon un expert montera une alternative qui sera en concurrence. Une qualité de service incite à l'augmentation de nouveaux
-utilisateurs qui veulent aussi leur part du gateau.
+## :lucide-check-check: Leviers d'optimisation
 
-- [x] Assurer une interface uniforme.
-- [x] Maintenir la qualité du service sans dégradation ou interruption (désiré ou non)
-- [x] identifier des indicateurs SLI/SLO pour suivre la santé du service
+### :lucide-users: Expérience utilisateur
+
+Une expérience cohérente est essentielle. Un utilisateur qui change de projet ou de tenant
+doit retrouver les mêmes concepts et les mêmes gestes.
+
+Une disponibilité élevée réduit les coûts de repli vers une solution alternative et maintient
+la confiance des équipes utilisateurs.
+
+- [x] offrir une interface uniforme ;
+- [x] maintenir des niveaux de service constants ;
+- [x] définir et suivre des SLI/SLO clairs.
 
 ### :lucide-wrench: Automatisation
 
-Pour répondre à une montée en charge des tenants, l'automatisation est un passage
-obligatoire. Si vous n'aviez sur votre plateforme que quelques projets à gérer et que le lendemain on
-vous annonce l'arrivée de 1000 developpeurs, le clic clic va devenir compliqué
-à assumer.
-Il y a plusieurs avantages concrets à l'automatisation:
+L'automatisation est indispensable pour piloter le service à grande échelle.
+Sans elle, le support manuel devient rapidement ingérable.
 
-- peu de risque d'écart de configuration
-- délai d'accostage grandement réduit
-- normes et contraintes davantage accepté par les utilisateurs par l'exercice
-- garantir la reconstruction sur un incident
-- capacité à faire évoluer et migrer des normes ou nouvelles fonctionnalités à
- l'échelle
-- une équipe SN3 qui peut porter des problématiques SN1/SN2 et prendre de l'information des usages au contact
+Avantages :
 
-Pour y arriver, il faudra se poser les bonnes questions dans la construction du service. Vous pouvez fournir et améliorer le service au fur et à mesure que les
-utilisateurs atterissent accélérant votre boucle de retour d'expérience.
+- réduction des écarts de configuration ;
+- accélération des onboarding ;
+- meilleur respect des normes ;
+- capacité de reconstruction après incident ;
+- déploiement et migration plus sûrs.
+- une capacité à faire évoluer et migrer des normes et des tenants sans interruption.
+- une équipe SN3 capable de gérer un service multi-tenant avec un effort limité et des
+  activités SN1/SN2 concentrées sur l'amélioration du service.
 
-- [x] identifier toutes les fonctionnalités obligatoires et optionnels qu'un projet aurait besoin
-- [x] Utiliser des outils d'automatisation comme Terraform, Ansible, ou les développer pour gérer le provisioning et configuration de chacun
-- [x] Proposer un mode d'accostage automatisé en self-service
-- [x] Documenter les fonctionnalités et normes implémentés auprès de vos utilisateurs
-- [x] Identifier les canaux pour qu'une équipe puisse diagnostiquer et s'auto remédier en autonomie
-- [x] Développer des tests adaptés à votre contexte
+Pour y parvenir :
 
-## Conclusion
+- [x] identifier les fonctionnalités indispensables et optionnelles ;
+- [x] utiliser des outils comme Terraform, Ansible ou des scripts sur mesure ;
+- [x] proposer un self-service pour l’accostage ;
+- [x] documenter les normes et les processus ;
+- [x] offrir des diagnostics et des canaux d’auto-remédiation ;
+- [x] développer des tests adaptés au contexte.
 
-Lorsqu'on évoque les gains, on parle souvent du coût opex des serveurs et
-éventuellement d'une ressource en moins par équipe. En réalité, il y a un
-transfert des coûts dans la construction d'une offre avec une double
-facturation au démarrage.
-En fonction de la taille, les gains financiers ne seront donc pas évidents.
-En revanche, si tout se passe correctement, les gains indirectes vont très
-vite être perceptibles. Les équipes consommatrices seront libérés d'une charge
-de maintenance et la prise en compte de la sécurité sera beaucoup plus élevé. Les équipes auront un accès à une expertise avancée. Avec une standardisation, vous diminuez la montée en compétence dans
-chaque équipe tout en profitant par design du meilleur des capacités du service.
+## :lucide-calendar-clock: Migration des tenants existants
 
-Un mono-tenant peut évoluer en un multi-tenant. Soyez malin et appliquez au mieux
-ces principes fondateurs par design.
+La migration des tenants existants doit être planifiée attentivement pour limiter les
+interruptions et les régressions.
+
+| Risque | Impact | Atténuation |
+| --- | --- | --- |
+| Downtime | Indisponibilité du service | Migration blue-green ou canary |
+| Résistance au changement | Adoption faible | Impliquer les utilisateurs tôt |
+| Configurations non compatibles | Régressions | Tests de non-régression avec cas réels |
+| Sous-estimation des coûts | Dépassement budgétaire | Benchmarks et estimation des gains |
+| Dégradation des performances | Lenteur générale | Tests de charge et montée en charge progressive |
+
+Une migration réussie combine communication, tests, plan de rollback et support
+aux utilisateurs. Elle se déroule en plusieurs vagues pour livrer de la valeur
+progressivement.
+
+```mermaid
+gantt
+    title Construction d'un multi-tenant
+    dateFormat  YYYY-MM
+    section Préparation
+    Audit des besoins          :a1, 2026-07, 1M
+    Design architecture         :a3, after a1, 1M
+    section Déploiement
+    PoC     :b1, after a3, 1M
+    1ers beta testeurs    :b2, after b1, 1M
+    section Scaling
+    Automatisation             :c1, after b2, 1M
+    Monitoring                 :c2, after c1, 1M
+    section Optimisation
+    Rex      :d1, after c2, 1M
+    + fonctionnalités  :d2, after d1, 1M
+```
+
+## :lucide-goal: Conclusion
+
+Le multi-tenant peut apporter une baisse des coûts d'exploitation tout en offrant
+une expertise centralisée. Ce n'est pas un raccourci : il demande un investissement
+initial plus important, une rigueur de gouvernance et une forte capacité d'automatisation.
+
+En fonction de l'échelle et du degré de standardisation, le gain financier peut être
+modéré au début, mais les bénéfices indirects sont réels : réduction de la maintenance
+par équipe, meilleure sécurité, expertise partagée.
+
+Un service mono-tenant peut évoluer vers un service multi-tenant. Appliquez ces
+principes dès la conception, et gardez à l'esprit que la construction d'un SaaS
+utilise des mécanismes similaires. Ce paradigme s'applique aussi bien à un service
+interne qu'à une offre externe.

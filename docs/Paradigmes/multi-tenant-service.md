@@ -18,6 +18,12 @@ hide:
   - edit
 ---
 
+!!! warning "Avertissement au lecteur"
+    Ce guide n'est pas un guide de développement pour construire un SaaS multi-tenant
+    pour des clients externes. Les problématiques sont similaires mais le contexte
+    et les réponses sont différentes. On se concentre ici sur des solutions
+    internes pour des équipes de développement très consommatrice de progiciel.
+
 ## :lucide-shield-question-mark: Qu'est-ce que le multi-tenant et quels sont ses défis ?
 
 Dans les grandes organisations, rationaliser les services socles est une réponse
@@ -48,7 +54,7 @@ offrant une expertise centralisée.
 ### :lucide-activity: Défis
 
 Le multi-tenant simplifie l’accès des consommateurs, mais il déplace la complexité
-vers l’équipe de plateforme.
+vers l’équipe plateforme.
 
 Par exemple, sur un Jenkins partagé :
 
@@ -58,6 +64,9 @@ Par exemple, sur un Jenkins partagé :
 Lors d’une mise à jour ou d’une montée de version, l’impact se mesure simultanément
 sur toutes les équipes. Il faut donc renforcer la surveillance, la validation et les
 mécanismes de rollback pour limiter les risques.
+
+Des choix doivent être faits comme privilégier les silos pour éviter le voisin bruyant,
+ou au contraire mutualiser les ressources pour réduire les coûts.
 
 Le choix entre un projet *brownfield* ou *greenfield* influence la satisfaction des
 utilisateurs : on ne peut pas retirer plus de fonctionnalité que ce que le service
@@ -180,7 +189,12 @@ En fonction de l'échelle et du degré de standardisation, le gain financier peu
 modéré au début, mais les bénéfices indirects sont réels : réduction de la maintenance
 par équipe, meilleure sécurité, expertise partagée.
 
-Un service mono-tenant peut évoluer vers un service multi-tenant. Appliquez ces
+Un service mono-tenant peut évoluer vers un service multi-tenant. Applgouvernanceiquez ces
 principes dès la conception, et gardez à l'esprit que la construction d'un SaaS
 utilise des mécanismes similaires. Ce paradigme s'applique aussi bien à un service
 interne qu'à une offre externe.
+
+## Ressources
+
+- [Multi tenancy with Jenkins, Juin 2015, by apemberton Cloudbees](https://www.cloudbees.com/blog/multi-tenancy-jenkins)
+- [White Paper "SaaS Tenant Isolation Strategies", Aout 2020, par AWS](https://d1.awsstatic.com/whitepapers/saas-tenant-isolation-strategies.pdf)

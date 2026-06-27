@@ -53,3 +53,4 @@ pièges, on évoquera les limites et alternatives.
 
 - [Documentation As Code](docs-as-code.md) — Présente l'approche « Documentation as Code », les outils et bonnes pratiques.
 - [Convention Over Configuration](convention-over-config.md) — Privilégier des normes que réinventer la roue pour améliorer l'UX.
+- [Multi-tenant Service](multi-tenant-service.md) — Comment concevoir un service multi-tenant, les avantages et les pièges à éviter.

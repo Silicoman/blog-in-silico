@@ -42,6 +42,7 @@ le niveau de configuration avec 4 niveaux.
 Prenons quelques exemples :
 
 | fonction | priorité | niveau d'autorisation|
+|---------|----------| --------------------|
 | création projet | critique | autonome |
 | création quality gate | haute | permission mais risque noisy neighbor|
 | modifier quality gate | haute | permission possible |
@@ -54,5 +55,19 @@ On identifie avec les utilisateurs les fonctionnalités qu'il faut absolument au
 !!! warning "consulté les utilisateurs les mains dans les poches"
    Vous devez connaître votre produit et présenter en séance des scénarios sur des fonctionnalités qui pourraient être un facteur de tension. Exemple : comment allez vous géré un mécanisme d'authentification si le prérequis est d'avoir un vpn qui nécessite 2 validations. Proposez des hypothèses et ralliez les à votre cause.
 
+A ce stade, on se rend compte que pour donner la main aux utilisateurs sur la personnalisation de leur expérience, il faudra créer une surcouche, un opérateur, qui aura des droits d'administration. 
+
+La prochaine étape est de définir comment un utilisateur peut être autonome sur cette personnalisation.
 
 
+## comment réaliser l'accostage, modifier ?
+
+Votre opérateur va devoir lire des informations extérieures 
+fournit par un utilisateur. Au début, vous désirez peut être relire les modifications demandées avant d'exécuter.
+
+Vous avez deux stratégies :
+
+vous pouvez passer par l'outil ITIL pour déployer une demande depuis un formulaire d'une demande technique. Ça marche, vous profitez de l'écosystème déjà en place et du système ticketing avec les SLI/SLA.
+
+
+à

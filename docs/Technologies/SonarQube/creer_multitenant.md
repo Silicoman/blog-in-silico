@@ -21,12 +21,14 @@ On observe souvent des instances non mis à jour, des problèmes de sécurité.
     des limitations comme la parallélisation. Pour bénéficier de fonctionnalités
     avancées, il est nécessaire de passer à une version sous licence.
     Cependant, vous pouvez provisionner plusieurs instances SonarQube Community Edition
-    pour vos équipes pour limiter l'effet noisy neighbor en ayant une isolation
-    plus élevée. Mais cela peut devenir coûteux en termes de ressources et
+    pour vos équipes. Pour limiter l'effet noisy neighbor et le nombre d'instance,
+    vous pouvez faire cohabiter des tenants sur la meme instance avec des faibles
+    consommateurs, isoler les gros, mixer des projets moyens.
+    Mais cela peut devenir coûteux en termes de ressources et
     de maintenance.
 
-L'idée est donc de centraliser ces coûts en créant une instance SonarQube multi-tenant au niveau applicatif.
-
+L'idée est donc de centraliser ces coûts en créant une instance SonarQube multi-tenant
+au niveau applicatif.
 
 ## Fonctionnalité d'un tenant
 
@@ -34,7 +36,7 @@ Il faut définir dans premier quels sont les besoins.
 On catégorise les fonctionnalités par priorité et par
 le niveau de configuration avec 4 niveaux.
 
-- Fonction à usage autonome 
+- Fonction à usage autonome
 - Fonction avec permission possible
 - Fonction nécessitant un rôle admin
 - Fonction qu'on veut durcir au niveau de l'instance
@@ -50,24 +52,76 @@ Prenons quelques exemples :
 | création template permission| critique | admin |
 | tags sur les projets | nice-to-have| autonome + durcissement|
 
-On identifie avec les utilisateurs les fonctionnalités qu'il faut absolument automatisé pour accueillir les premiers tenants. On en profite pour se projeter pour voir ce qu'il faudra faire. La plupart des fonctions pourront temporairement être réalisé à la main par l'équipe mais devront suivre la future convention en attendant. 
+On identifie avec les utilisateurs les fonctionnalités qu'il faut
+absolument automatisé pour accueillir les premiers tenants. On en profite
+pour se projeter pour voir ce qu'il faudra faire. La plupart des fonctions
+pourront temporairement être réalisé à la main par l'équipe mais devront
+suivre la future convention en attendant.
 
 !!! warning "consulté les utilisateurs les mains dans les poches"
-   Vous devez connaître votre produit et présenter en séance des scénarios sur des fonctionnalités qui pourraient être un facteur de tension. Exemple : comment allez vous géré un mécanisme d'authentification si le prérequis est d'avoir un vpn qui nécessite 2 validations. Proposez des hypothèses et ralliez les à votre cause.
+   Vous devez connaître votre produit et présenter en séance des scénarios sur
+   des fonctionnalités qui pourraient être un facteur de tension.
+   Exemple : comment allez vous géré un mécanisme d'authentification si le
+   prérequis est d'avoir un vpn qui nécessite 2 validations. Proposez des
+   hypothèses et ralliez les à votre cause.
 
-A ce stade, on se rend compte que pour donner la main aux utilisateurs sur la personnalisation de leur expérience, il faudra créer une surcouche, un opérateur, qui aura des droits d'administration. 
+A ce stade, on se rend compte que pour donner la main aux utilisateurs sur la
+personnalisation de leur expérience, il faudra créer une surcouche, un opérateur,
+qui aura des droits d'administration.
 
-La prochaine étape est de définir comment un utilisateur peut être autonome sur cette personnalisation.
+La prochaine étape est de définir comment un utilisateur peut être autonome
+sur cette personnalisation.
 
 
 ## comment réaliser l'accostage, modifier ?
 
-Votre opérateur va devoir lire des informations extérieures 
-fournit par un utilisateur. Au début, vous désirez peut être relire les modifications demandées avant d'exécuter.
+Votre opérateur va devoir lire des informations extérieures
+fournit par un utilisateur. Au début, vous désirez peut être relire les
+modifications demandées avant d'exécuter.
 
-Vous avez deux stratégies :
+Vous avez deux (voir 3) stratégies :
 
-vous pouvez passer par l'outil ITIL pour déployer une demande depuis un formulaire d'une demande technique. Ça marche, vous profitez de l'écosystème déjà en place et du système ticketing avec les SLI/SLA.
+vous pouvez passer par l'outil ITIL pour déployer une demande depuis un formulaire
+d'une demande technique. Ça marche, vous profitez de l'écosystème déjà en place et
+du système ticketing avec les SLI/SLA.
+
+Une autre proposition est de proposer un modèle de configuration as code ouvert.
+Vous maintenez un dépôt contenant l'ensemble des configurations des différents
+tenants. Pour faire l'accostage, vous proposez un modèle de contribution
+au dépôt git. Les pipelines de pull requests valideront la cohérence de la
+configuration.
+
+La dernière solution est d'intégrer l'opérateur à un internal developer plateform.
+L'approvisionnement passe par une plateforme. C'est la plateforme qui porte
+comment accoster en s'appuyant sur votre opérateur.
+
+## Indicateurs gouvernance
 
 
-à
+
+
+## Mise en situation
+
+
+### Construction d'une roadmap
+
+Les fonctionnalités sont identifiées et priorisées et on a une cinématique
+avec nos utilisateurs.
+
+!!! info "*Brownfield* versus *greenfield*"
+    Le *Brownfield* est le scénario que les gens redoutent car ils pensent
+    que c'est plus simple de partir de zéro avec une configuration propre.
+    En réalité, l'argent que vous pensez économiser, vous allez le dépenser
+    à migrer. Vous avez déjà une base d'utilisateur qui vous permettent
+    de construire des indicateurs et une architecture fonctionelle.
+
+
+Partons du postulat qu'on construit le service à partir d'un *brownfield*.
+Votre SonarQube server tourne sur une VM.
+
+- [x] Besoin identifié
+- [x] Architecture présente
+- [ ] développer 1er version de l'opérateur
+- [ ] amélioration de l'architecture
+- [ ] déployer des indicateurs
+- [ ] apporter une v1+ de l'operateur

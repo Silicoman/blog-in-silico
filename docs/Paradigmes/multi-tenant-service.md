@@ -135,6 +135,20 @@ Avantages :
 - une équipe SN3 capable de gérer un service multi-tenant avec un effort limité et des
   activités SN1/SN2 concentrées sur l'amélioration du service.
 
+L'automatisation de la création et modification d'un tenant se découpe en deux axes.
+Vous désirez standardiser un tenant et les capacités à disposition. Vous proposez
+une expérience personnalisée pour les besoins spécifiques de chacun.
+Pour mettre en oeuvre de la personnalisation et du durcissement, chaque
+fonctionnalité doit être classifié en fonction des permissions accessibles
+en fonction des permissions nécessaires et disponibles par votre service.
+
+| Usage | Droits nécessaire pour modification | Exemples |
+| ----- | ----------------------------------- | -------- |
+| Fonction globale au tenant    | Autonome par défaut                       |  Créer un projet SonarQube, télécharger depuis un proxy nexus |
+| Fonction spécifique au tenant | Possibilité d'autonomie après permission  | Modifier des secrets dans un vault, créer des artefacts dans un dépot privée Nexus |
+| Fonction spécifique au tenant | Accès à la fonction uniquement par un administrateur | Créer un nouveau type de depot sur Nexus, créer des groupes utilisateur SonarQube |
+| Fonction durcie               |  -                                        | Appliquer des normes de nommage des projets SonarQube, conservation des artefacts Nexus |
+
 Pour y parvenir :
 
 - [x] identifier les fonctionnalités indispensables et optionnelles ;
@@ -189,7 +203,7 @@ En fonction de l'échelle et du degré de standardisation, le gain financier peu
 modéré au début, mais les bénéfices indirects sont réels : réduction de la maintenance
 par équipe, meilleure sécurité, expertise partagée.
 
-Un service mono-tenant peut évoluer vers un service multi-tenant. Applgouvernanceiquez ces
+Un service mono-tenant peut évoluer vers un service multi-tenant. Appliquez ces
 principes dès la conception, et gardez à l'esprit que la construction d'un SaaS
 utilise des mécanismes similaires. Ce paradigme s'applique aussi bien à un service
 interne qu'à une offre externe.
